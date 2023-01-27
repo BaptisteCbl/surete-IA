@@ -155,6 +155,7 @@ $$\mathcal{R}(F) = \underset{x\sim D}{\mathbb{E}} \underset{\lVert x' - x \rVert
 The most-adversial example is the point whehre the model is most likelt to be fooled in the neighborhood of x. A lower loss value of $\mathcal{L}_{adv}$ indicates a more robust classifier.
 
 * Generating Adversarial Examples
+
 :PROPERTIES:
 :NOTER_PAGE: 4
 :END:
