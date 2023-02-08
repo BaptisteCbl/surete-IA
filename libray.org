@@ -1,0 +1,63 @@
+* Attacks
+
+** Deep Robust
+- Nattack
+- universal
+- YOPO PGD
+- Carlini (Which one ?)
+- Deepfool
+- FGSM
+- L-BFGS
+- One pixel
+- PGD
+- L2 attack (detail?)
+
+
+** Cleverhans
+- BIM
+- CW L2
+- DeepFool
+- ElasticNet
+- Fast feature
+- FGMS
+- HopSkipJump
+- LBFGS
+- MadryEtAl ?
+- MaxConfidence (against confidence threshold defense)
+- Momentum iterative method
+- Saliency map
+- SPSA
+- Virtual adversarial method
+
+
+** Foolbox
+- BIM $l_2 + l_\infty$
+- PGD $l_2 + l_\infty$
+- FGSM $l_2 + l_\infty$
+- Lots of noise attacks
+- Inversion ("negatives images")
+- contrast
+- HopSkipJumpA
+- C&W $l_2$
+- Newtoon Fool
+- EAD
+- DeeFool $l_2 + l_\infty$
+- Boundary attack
+- Brendel & Bethge $l_0 + l_1 + l_2 + l_\infty$
+- Fast Minimal Norm $l_0 + l_1 + l_2 + l_\infty$
+- Pointwise
+
+* Defense
+
+** Deep Robust
+
+- LID (detector)
+- Thermometer encoding
+- YOPO
+- Fast defense ?
+- FGSM training
+- PGD training
+- Trade ?
+
+** Cleverhans
+  not founded
