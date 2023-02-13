@@ -1,3 +1,8 @@
+#+title: Libraries for adversarial examples
+#+language: en
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+OPTIONS: ^:{}
+
 [[https://github.com/DSE-MSU/DeepRobust][DeepRobust]]
 
 [[https://github.com/cleverhans-lab/cleverhans][CleverHans]]
@@ -68,3 +73,76 @@
 
 ** Cleverhans
   not founded
+
+
+
+
+
+
+* More details on Cleverhans
+
+** BIM/PGD
+
++ *eps*: /(optional float)/ maximum distortion of adversarial example
+          compared to original input
++ *eps_iter*: /(optional float)/ step size for each attack iteration
++ *nb_iter*: /(optional int)/ Number of attack iterations.
++ *y*: /(optional)/ A tensor with the true labels.
++ *y_target*: /(optional)/ A tensor with the labels to target. Leave
+               y_target=None if y is also set. Labels should be
+               one-hot-encoded.
++ *ord*: /(optional)/ Order of the norm (mimics Numpy).
+          Possible values: np.inf, 1 or 2.
++ *loss_fn*: Loss function that takes (labels, logits) as arguments and returns loss
++ *clip_min*: /(optional float)/ Minimum input component value
++ *clip_max*: /(optional float)/ Maximum input component value
++ *rand_init*: /(optional)/ Start the gradient descent from a point chosen
+                uniformly at random in the norm ball of radius
+                rand_init_eps
++ *rand_init_eps*: /(optional float)/ size of the norm ball from which
+                    the initial starting point is chosen. Defaults to eps
++ *clip_grad*: /(optional bool)/ Ignore gradient components at positions
+                where the input is already at the boundary of the domain,
+                and the update step will get clipped out.
++ *sanity_checks*: /bool/ Insert tf asserts checking values
+  (Some tests need to run with no sanity checks because the
+   tests intentionally configure the attack strangely)
+
+#+begin_src python
+x = projected_gradient_descent(net, x, FLAGS.eps, 0.01, 40, np.inf)
+#+end_src
+
+**  Carlini
+
+        - *y*: /(optional)/ A tensor with the true labels for an untargeted
+                  attack. If None (and y_target is None) then use the
+                  original labels the classifier assigns.
+        - *y_target*: /(optional)/ A tensor with the target labels for a
+                  targeted attack.
+        - *confidence*: Confidence of adversarial examples: higher produces
+                           examples with larger l2 distortion, but more
+                           strongly classified as adversarial.
+        - *batch_size*: Number of attacks to run simultaneously.
+        - *learning_rate*: The learning rate for the attack algorithm.
+                              Smaller values produce better results but are
+                              slower to converge.
+        - *binary_search_steps*: The number of times we perform binary
+                                    search to find the optimal tradeoff-
+                                    constant between norm of the purturbation
+                                    and confidence of the classification.
+        - *max_iterations*: The maximum number of iterations. Setting this
+                               to a larger value will produce lower distortion
+                               results. Using only a few iterations requires
+                               a larger learning rate, and will produce larger
+                               distortion results.
+        - *abort_early*: If true, allows early aborts if gradient descent
+                            is unable to make progress (i.e., gets stuck in
+                            a local minimum).
+        - *initial_const*: The initial tradeoff-constant to use to tune the
+                              relative importance of size of the perturbation
+                              and confidence of classification.
+                              If binary_search_steps is large, the initial
+                              constant is not important. A smaller value of
+                              this constant gives lower distortion results.
+        - *clip_min*: /(optional float)/ Minimum input component value
+        - *clip_max*: /(optional float)/ Maximum input component value

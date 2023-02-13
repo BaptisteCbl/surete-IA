@@ -6,9 +6,19 @@
 Installation from fresh environment.
 
 #+begin_src bash
-conda env create --file env.yml
+conda env create --file clever.yml
 #+end_src
 
 #+begin_src bash
 conda activate Robust
+#+end_src
+
+Running the training from quicktest/
+#+begin_src bash
+python src/training.py  --flagfile=config_files/training.cfg
+#+end_src
+
+Running the evaluation
+#+begin_src bash
+python src/evaluation.py  --flagfile=config_files/evaluation.cfg
 #+end_src

@@ -1,0 +1,20 @@
+name: Robust 
+channels: 
+    - pytorch
+    - nvidia
+    - conda-forge 
+dependencies: 
+  - nvidia::cudatoolkit=11.7  # based on nvidia-smi
+  - python=3.10
+  - pytorch>=1.7.0
+  - torchvision>=0.8.0
+  - tensorflow>=2.4
+  - jax>=0.2.9
+  - tqdm
+  - black
+  - pip
+  - pip:
+    - cleverhans
+
+# conda env create --file clever.yml
+# conda actiave Robust
