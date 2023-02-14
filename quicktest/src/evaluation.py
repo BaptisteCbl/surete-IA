@@ -1,9 +1,9 @@
 from absl import app, flags
 import numpy as np
 import torch
-
 from tqdm import tqdm
-from utils import *
+
+from src.utils import *
 
 FLAGS = flags.FLAGS
 

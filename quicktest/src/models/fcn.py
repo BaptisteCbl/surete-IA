@@ -6,9 +6,9 @@ import torch.nn.functional as F
 class fcn(torch.nn.Module):
     """Basic fcn architecture."""
 
-    def __init__(self, in_channels):
+    def __init__(self, in_channels: int = 3 * 32 * 32):
         super().__init__()
-        self.linear1 = nn.Linear(3 * 32 * 32, 1024)
+        self.linear1 = nn.Linear(in_channels, 1024)
         self.linear2 = nn.Linear(1024, 512)
         self.linear3 = nn.Linear(512, 64)
         self.linear4 = nn.Linear(64, 64)

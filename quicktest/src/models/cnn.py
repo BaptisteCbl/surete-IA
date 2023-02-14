@@ -3,10 +3,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class cnn(torch.nn.Module):
+class cnn(nn.Module):
     """Basic CNN architecture."""
 
-    def __init__(self, in_channels=1):
+    def __init__(self, in_channels: int=1):
         super(cnn, self).__init__()
         self.conv1 = nn.Conv2d(in_channels, 64, 8, 1)
         self.conv2 = nn.Conv2d(64, 128, 6, 2)

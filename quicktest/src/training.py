@@ -4,17 +4,17 @@ import torch
 
 from tqdm import tqdm
 
-from cleverhans.torch.attacks.fast_gradient_method import fast_gradient_method
-from cleverhans.torch.attacks.projected_gradient_descent import (
+from src.attacks.fast_gradient_method import fast_gradient_method
+from src.attacks.projected_gradient_descent import (
     projected_gradient_descent,
 )
 
-from utils import *
+from src.utils import *
 
 FLAGS = flags.FLAGS
 
 
-def training(net, data, device, optimizer, loss_fn):
+def training(net, data, device, optimizer, loss_fn) -> None:
     # Train vanilla model
     net.train()
     for epoch in range(1, FLAGS.nb_epochs + 1):

@@ -2,3 +2,4 @@
 quicktest/data/*
 quicktest/deeprobust/*
 __pycache__
+src.egg-info

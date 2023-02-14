@@ -1,9 +1,19 @@
 import torch
 import torchvision
 from easydict import EasyDict
+from typing import Callable
 
 
-def get_model(model_name):
+def get_model(model_name: str) -> torch.nn.Module:
+    """Load the model from the models module by its name
+
+    Args:
+        model_name: The name of the model to fetch.
+    Exemple:
+        model = get_model("cnn") -> model()
+        is the equivalent to
+        import models.cnn as cnn -> cnn.cnn()
+    """
     # __import__ method used
     # to fetch module
     module_models = __import__("models." + model_name)
@@ -12,32 +22,50 @@ def get_model(model_name):
     return my_model
 
 
-def get_attack(attack_name):
-    module = __import__("cleverhans.torch.attacks." + attack_name)
-    module1 = getattr(module, "torch")
-    module2 = getattr(module1, "attacks")
-    module3 = getattr(module2, attack_name)
-    attack = getattr(module3, attack_name)
+def get_attack(attack_name: str) -> Callable:
+    """Load the attack from cleverhans.torch.attacks by its name
+
+    Args:
+        attack_name: name of the attack to fetch.
+    Exemple:
+        get_atttack(fast_gradient_method)
+        is the equivalent to
+        from cleverhans.torch.attacks.fast_gradient_method import fast_gradient_method
+    """
+    module = __import__("attacks." + attack_name)
+    moduleAtk = getattr(module, attack_name)
+    attack = getattr(moduleAtk, attack_name)
     return attack
 
 
-def load_data(data_name):
+def load_data(data_name: str) -> EasyDict:
+    """Load data from torchvision.datasets by its name.
+
+    Args
+        data_name: name of the dataset to fetch
+    Exemple:
+        data = load_data("MNIST)
+        is the equivalent to
+        import torchvision.datasets.MNIST as data
+    """
     data = getattr(torchvision.datasets, data_name)
     root = "./data/" + data_name
 
-    """Load training and test data."""
+    # Define the transformations to the data
     train_transforms = torchvision.transforms.Compose(
         [torchvision.transforms.ToTensor()]
     )
     test_transforms = torchvision.transforms.Compose(
         [torchvision.transforms.ToTensor()]
     )
+    # Load training and test data, from root (downloaded if needed)
     train_dataset = data(
         root=root, train=True, transform=train_transforms, download=True
     )
     test_dataset = data(
         root=root, train=False, transform=test_transforms, download=True
     )
+    # Define the loader
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=128, shuffle=True, num_workers=2
     )
