@@ -8,11 +8,12 @@ from src.utils import *
 FLAGS = flags.FLAGS
 
 
-def perform_attack(net, x, y, eps):
+def perform_attack(net, x, y, eps, device):
     y_pred_advs = []
+
     for attack_name in FLAGS.attacks:
         attack = get_attack(attack_name)
-
+        batch = True
         match attack_name:
             case "fast_gradient_method":
                 param = (eps, np.inf)
@@ -26,11 +27,18 @@ def perform_attack(net, x, y, eps):
                 param = (10, 1, 20)
             case "hop_skip_jump_attack":
                 param = (np.inf, None)
+            case "deepfool":
+                batch = False
+                param = (10, 0.02, 5, device)
             case _:
                 assert False, "Unsupported attack"
-
-        x_adv = attack(net, x, *param)
-
+        if batch:
+            x_adv = attack(net, x, *param)
+        else:
+            batch_size = x.shape[0]
+            x_adv = torch.zeros((batch_size, 3, 32, 32)).to(device)
+            for i in range(batch_size):
+                x_adv[i, :, :, :] = attack(net, x[i, :, :, :], *param)
         _, y_pred_adv = net(x_adv).max(1)
         y_pred_advs.append(y_pred_adv.eq(y).sum().item())
 
@@ -49,7 +57,7 @@ def evaluation(net, data, device):
             x, y = x.to(device), y.to(device)
 
             _, y_pred = net(x).max(1)  # model prediction on clean examples
-            y_preds_adv = perform_attack(net, x, y, eps)
+            y_preds_adv = perform_attack(net, x, y, eps, device)
 
             report["nb_test"] += y.size(0)
             report["base"] += y_pred.eq(y).sum().item()
