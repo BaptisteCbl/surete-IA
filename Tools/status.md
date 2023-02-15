@@ -3,5 +3,8 @@
     - α,β-CROWN : unusable, CPLEX licence required, https://github.com/Verified-Intelligence/alpha-beta-CROWN,   
     - MN-BaB : unusable, password for gitlab submodule required, https://github.com/eth-sri/mn-bab 
     - VeriNet : unusable, Xpress licence required, https://github.com/vas-group-imperial/VeriNet
-    - nnenum : usable, no issues (with docker run), https://github.com/stanleybak/nnenum
-    -     
+    - nnenum : usable, no issues (with docker run, classic run not tested), https://github.com/stanleybak/nnenum
+    - CGDTest : unusable, repository not reachable (404), https://github.com/vin-nag/CGD.git
+    - PeregriNN : unusable, may work but readme not up-to-date so require time, https://github.com/haithamkhedr/PeregriNN/tree/vnn2022
+    - Marabou : unusable, will surely work but for now I can't compile properly, https://github.com/NeuralNetworkVerification/Marabou
+    - Debona : https://github.com/ChristopherBrix/Debona
