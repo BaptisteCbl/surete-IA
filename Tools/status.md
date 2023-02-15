@@ -7,4 +7,4 @@
     - CGDTest : unusable, repository not reachable (404), https://github.com/vin-nag/CGD.git
     - PeregriNN : unusable, may work but readme not up-to-date so require time, https://github.com/haithamkhedr/PeregriNN/tree/vnn2022
     - Marabou : unusable, will surely work but for now I can't compile properly, https://github.com/NeuralNetworkVerification/Marabou
-    - Debona : https://github.com/ChristopherBrix/Debona
+    - Debona : usable, not explanation so arguements hard to determine, https://github.com/ChristopherBrix/Debona
