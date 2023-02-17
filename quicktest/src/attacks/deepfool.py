@@ -31,7 +31,7 @@ def deepfool(model, image, num_classes, overshoot, max_iteration, device):
 
     Parameters
     ----------
-    image : 1*3*H*W
+    image : X*3*H*W
         original image
     kwargs :
         user defined paremeters
@@ -41,10 +41,13 @@ def deepfool(model, image, num_classes, overshoot, max_iteration, device):
     adv_img :
         adversarial examples
     """
-    adv_img, r, ite = _deepfool(
-        model, image, num_classes, overshoot, max_iteration, device
-    )
-    return adv_img
+    batch_size = image.shape[0]
+    x_adv = torch.zeros((batch_size, 3, image.shape[2], image.shape[3])).to(device)
+    for i in range(batch_size):
+        x_adv[i, :, :, :], r, ite = _deepfool(
+            model, image[i, :, :, :], num_classes, overshoot, max_iteration, device
+        )
+    return x_adv
 
 
 def _deepfool(model, imageO, num_classes, overshoot, max_iter, device):

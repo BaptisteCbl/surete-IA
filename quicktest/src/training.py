@@ -38,7 +38,7 @@ def training(net, data, device, optimizer, loss_fn) -> None:
             )
         )
         # Save the model
-        torch.save(net, "./saves/" + FLAGS.save)
+        torch.save(net, "./saves/" + FLAGS.save + ".pt")
 
 
 def display_flag():
@@ -66,7 +66,11 @@ def main(_):
     # Load the model from the string flag
     model = get_model(FLAGS.model)
     # Instantiate the model
-    net = model(in_channels=FLAGS.in_channels)
+    net = model(
+        in_channels=FLAGS.in_channels,
+        out_channels=FLAGS.out_channels,
+        dim=(int(FLAGS.dim[0]), int(FLAGS.dim[0])),
+    )
     # Load the model on GPU if available
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if device == "cuda":
@@ -82,6 +86,8 @@ def main(_):
 if __name__ == "__main__":
     flags.DEFINE_integer("nb_epochs", 0, "Number of epochs.")
     flags.DEFINE_integer("in_channels", 0, "Number of input channels of the model.")
+    flags.DEFINE_integer("out_channels", 0, "Number of output channels of the model.")
+    flags.DEFINE_list("dim", 0, "Dimension of the input H,W")
     flags.DEFINE_float("eps", 0, "Total epsilon for FGM and PGD attacks.")
     flags.DEFINE_bool(
         "adv_train", None, "Use adversarial training (on PGD adversarial examples)."

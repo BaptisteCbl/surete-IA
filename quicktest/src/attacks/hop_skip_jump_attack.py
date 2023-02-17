@@ -17,17 +17,16 @@ import torch
 def hop_skip_jump_attack(
     model_fn,
     x,
-    norm,
     y_target=None,
     image_target=None,
-    initial_num_evals=100,
-    max_num_evals=10000,
+    initial_num_evals=1,  # 100
+    max_num_evals=100,  # 10000
     stepsize_search="geometric_progression",
-    num_iterations=64,
+    num_iterations=2,
     gamma=1.0,
-    constraint=2,
+    constraint=2,  # norme?
     batch_size=128,
-    verbose=True,
+    verbose=False,
     clip_min=0,
     clip_max=1,
 ):

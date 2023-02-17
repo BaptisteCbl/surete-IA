@@ -73,3 +73,5 @@ def load_data(data_name: str) -> EasyDict:
         test_dataset, batch_size=128, shuffle=False, num_workers=2
     )
     return EasyDict(train=train_loader, test=test_loader)
+
+
