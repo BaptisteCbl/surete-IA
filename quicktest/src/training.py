@@ -67,7 +67,7 @@ def display_flag():
 def main(_):
     display_flag()
     # Load training and test data
-    data = load_data(FLAGS.data)
+    data = load_data(FLAGS.data, FLAGS.batchsize)
     # Load the model from the string flag
     model = get_model(FLAGS.model)
     # Instantiate the model
@@ -98,6 +98,8 @@ if __name__ == "__main__":
         "adv_train", None, "Use adversarial training (on PGD adversarial examples)."
     )
     flags.DEFINE_string("data", "", "The dataset to load.")
+    flags.DEFINE_integer("batchsize", 0, "The batch size for the loader.")
+
     flags.DEFINE_string("model", "", "The model to load.")
     flags.DEFINE_string("save", "", "The path to save the model.")
 

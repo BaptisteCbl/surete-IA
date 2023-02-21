@@ -3,7 +3,7 @@
 [[https://github.com/cleverhans-lab/cleverhans][CleverHans]]
 
 
-Installation from fresh environment.
+* Installation from fresh environment.
 
 #+begin_src bash
 conda env create --file slim.yml
@@ -17,6 +17,8 @@ conda activate RobustSlim
 pip install -e .
 #+end_src
 
+* Running the scripts
+
 Running the training from quicktest/
 #+begin_src bash
 python src/training.py  --flagfile=config_files/training.cfg
@@ -26,3 +28,40 @@ Running the evaluation
 #+begin_src bash
 python src/evaluation.py  --flagfile=config_files/evaluation.cfg
 #+end_src
+
+** the configuration files
+
+We use the /abseil/ library to pass parameters to the code with the ~FLAGS~ from a config file using the ~flagfile~ parameter when executing a python script.
+We use two configuration files one for training and one for the evaluation. The display configuration file is the same as the evaluation one.
+*** Training configuration file
+- For the *model*
+    - ~model~ the model's name which can be found in ~src/models~. The model's class name must be the name as the module name (e.g. cnn.py and class cnn()).
+    - ~save~ the name to use when saving the model.
+- For the *data*
+    - ~data~ the dataset name. The dataset will be loaded from ~torchvision.datasets~ using only its name.
+    - ~dim~ the height and width of the images.
+    - ~batchsize~ the batch size to use for the loader.
+- For the model's *hyperparameters*
+    - ~nb_epoch~ the number of epochs needed for the training.
+    - ~in_channels~ the number of inputs channels, it is usually the number of channels of the images (1 or 3).
+    - ~out_channels~ the number of output channels, it is usually the number of classes to predict.
+
+- For the *adversarial training*
+    - ~adv_train~ boolean if the training must use adversarial examples.
+    - ~eps~ the epsilon value used for computing the adversarial example.
+
+*** Evaluation configuration file
+- For the *model*
+    - ~save~ the name of the save to load.
+- For the *data*
+    - ~data~ the dataset name. The dataset will be loaded from ~torchvision.datasets~ using only its name.
+    - ~batchsize~ the batch size to use for the loader (a smaller batch size can help for ~torch.cuda.OutOfMemoryError~). 
+- For the *attacks*   
+    - ~attacks~ list of the attacks' name to use.
+-For the attacks' *parameters*
+    - ~eps~ list of the epsilon values to use for FGSM and PGD attacks.
+    - ~norm~ the norm to use for the different attacks (0,1,2, np.inf).
+    - ~clip_min~ minimal clip value for the image.
+    - ~clip_max~ max clip value for the image either 1/255 for float/int values.
+    - ~num_classes~ the number of classes in the dataset
+    - ~<attack>_parameters~ a list of the /<attack>/ parameters. 

@@ -38,7 +38,7 @@ def get_attack(attack_name: str) -> Callable:
     return attack
 
 
-def load_data(data_name: str) -> EasyDict:
+def load_data(data_name: str, batch_size: int) -> EasyDict:
     """Load data from torchvision.datasets by its name.
 
     Args
@@ -67,11 +67,9 @@ def load_data(data_name: str) -> EasyDict:
     )
     # Define the loader
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=128, shuffle=True, num_workers=2
+        train_dataset, batch_size=batch_size, shuffle=True, num_workers=2
     )
     test_loader = torch.utils.data.DataLoader(
-        test_dataset, batch_size=128, shuffle=False, num_workers=2
+        test_dataset, batch_size=batch_size, shuffle=False, num_workers=2
     )
     return EasyDict(train=train_loader, test=test_loader)
-
-

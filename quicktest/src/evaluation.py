@@ -296,7 +296,7 @@ def display_flag():
 def main(_):
     display_flag()
     # Load training and test data
-    data = load_data(FLAGS.data)
+    data = load_data(FLAGS.data, FLAGS.batchsize)
     # Load the saved model from the save path flag
     net = torch.load("./saves/" + FLAGS.save + ".pt")
     # Load the model on GPU if available
@@ -310,6 +310,7 @@ def main(_):
 
 if __name__ == "__main__":
     flags.DEFINE_string("data", "", "The dataset to load.")
+    flags.DEFINE_integer("batchsize", 0, "The batch size for the loader.")
     flags.DEFINE_string("save", "", "The path to save the model.")
     flags.DEFINE_list("attacks", [], "List of all attacks to perform")
     flags.DEFINE_integer("num_classes", 10, "Number of classes in the dataset")
