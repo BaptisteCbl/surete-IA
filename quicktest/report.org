@@ -1,3 +1,7 @@
+#+LATEX_HEADER:\usepackage{pifont}
+#+LATEX_HEADER:\newcommand{\cmark}{\ding{51}}
+#+LATEX_HEADER:\newcommand{\xmark}{\ding{55}}
+
 * Datasets
     - MNIST:
         - Training set: 60,000 examples
@@ -16,3 +20,24 @@
         - Test set: 10,000 examples
         - Example: $32 \times 32$ color image
         - 10 classes for CIFAR-10 and 100 for CIFAR-100, real life small images (cat, dog, plane, car...)
+
+
+* Available attacks
+    - From [[https://github.com/cleverhans-lab/cleverhans][CleverHans]]:
+        - fast_gradient_method (FGSM)
+        - projected_gradient_descent (PGD)
+        - carlini_wagner_l2 (C&W $l_2$)
+        - spsa
+        - sparse_l1_descent (Sp L1)
+        - hop_skip_jump_attack (HSJA)
+    - From [[https://github.com/DSE-MSU/DeepRobust][DeepRobust]]:
+        - deepfool
+
+
+Attack classification
+  
+|                  |   FGSM   | PGD | CW  | SPSA | Sparse | HSJA | DeepFool |   ZOO    |
+| <l>              |   <c>    | <c> | <c> | <c>  |  <c>   | <c>  |   <c>    |   <c>    |
+| Gradient-based   | $\cmark$ |     |     |      |        |      |          | $\xmark$ |
+| Iterative method |          |     |     |      |        |      |          |          |
+| Norm             |          |     | l2  |      |   l1   |      |          |          |

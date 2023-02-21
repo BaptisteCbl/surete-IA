@@ -109,5 +109,6 @@ if __name__ == "__main__":
     # Deterministic
     print("Seed set to 0")
     # seed the RNG for all devices (both CPU and CUDA)
-    torch.manual_seed(0)
+    torch.manual_seed(42)
+    np.random.seed(42)
     app.run(main)
