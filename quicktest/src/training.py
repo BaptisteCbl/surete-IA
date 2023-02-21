@@ -17,14 +17,16 @@ FLAGS = flags.FLAGS
 def training(net, data, device, optimizer, loss_fn) -> None:
     # Train vanilla model
     net.train()
+    # Training loop
     for epoch in range(1, FLAGS.nb_epochs + 1):
         train_loss = 0.0
         for x, y in tqdm(data.train, leave=False):
             x, y = x.to(device), y.to(device)
+            # TODO flag to choose the attack
+            # Replace clean example with adversarial example for adversarial training
             if FLAGS.adv_train:
-                # Replace clean example with adversarial example for adversarial training
-                # x = projected_gradient_descent(net, x, FLAGS.eps, 0.01, 40, np.inf)
-                x = fast_gradient_method(net, x, FLAGS.eps, np.inf)
+                x = projected_gradient_descent(net, x, FLAGS.eps, 0.01, 40, np.inf)
+                # x = fast_gradient_method(net, x, FLAGS.eps, np.inf)
             # Optimization step
             optimizer.zero_grad()
             loss = loss_fn(net(x), y)
@@ -37,11 +39,14 @@ def training(net, data, device, optimizer, loss_fn) -> None:
                 epoch, FLAGS.nb_epochs, train_loss
             )
         )
-        # Save the model
-        torch.save(net, "./saves/" + FLAGS.save + ".pt")
+    # Save the model (only for the last epoch)
+    torch.save(net, "./saves/" + FLAGS.save + ".pt")
 
 
 def display_flag():
+    """
+    Display some flags value.
+    """
     print("+" + "-" * 40 + "+")
     print("Model:")
     print("Model ", FLAGS.model)

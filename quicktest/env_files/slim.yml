@@ -14,6 +14,7 @@ dependencies:
   - easydict
   - absl-py
   - typing
+  - matplotlib
 
 # conda env create --file slim.yml
 # conda actiave RobustSlim

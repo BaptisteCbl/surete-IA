@@ -42,7 +42,9 @@ def deepfool(model, image, num_classes, overshoot, max_iteration, device):
         adversarial examples
     """
     batch_size = image.shape[0]
-    x_adv = torch.zeros((batch_size, 3, image.shape[2], image.shape[3])).to(device)
+    x_adv = torch.zeros(
+        (batch_size, image.shape[1], image.shape[2], image.shape[3])
+    ).to(device)
     for i in range(batch_size):
         x_adv[i, :, :, :], r, ite = _deepfool(
             model, image[i, :, :, :], num_classes, overshoot, max_iteration, device
@@ -51,7 +53,9 @@ def deepfool(model, image, num_classes, overshoot, max_iteration, device):
 
 
 def _deepfool(model, imageO, num_classes, overshoot, max_iter, device):
-    image = torch.zeros((1, 3, 32, 32)).to(device)
+    image = torch.zeros((1, imageO.shape[0], imageO.shape[1], imageO.shape[2])).to(
+        device
+    )
     image[0, :, :, :] = imageO
 
     f_image = model.forward(image).data.cpu().numpy().flatten()

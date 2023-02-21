@@ -9,9 +9,35 @@ from src.utils import *
 
 FLAGS = flags.FLAGS
 
+
 ## All attacks are test in an untargeted setup (thus some None in parameters)
-def parse_parameters(num_classes, eps, norm, clip_min, clip_max, batch_size, device):
+def parse_parameters(
+    num_classes: int = 10,
+    eps: float = 0.05,
+    norm: int | float = np.inf,
+    clip_min: int = 0,
+    clip_max: int = 1,
+    batch_size: int = 128,
+    device: str = "cuda",
+):
+    """
+    Given some parameters in arguments and the parameters in
+    the config file (stored in FLAGS) create for all attacks a tuple of
+    the attack parameters. The store them in a dictionnary.
+
+    Args:
+        num_classes: number of classes in the data set.
+        eps: eps parameter for the attacks (FGSM, PGD).
+        norm: norm used in the attacks, either 0,1,2,np.inf (not all are implemented
+            for all attacks).
+        clip_min: minimal clip value for the image.
+        clip_max: max clip value for the image either 1/255 for float/int values.
+        batch_size: size of the batches in the data loader.
+        device: device to use for the attacks, either cpu or cuda.
+
+    """
     dict_param = {}
+    # For all attacks specified in the confile file
     for attack_name in FLAGS.attacks:
         match attack_name:
             case "fast_gradient_method":
@@ -151,34 +177,63 @@ def parse_parameters(num_classes, eps, norm, clip_min, clip_max, batch_size, dev
                     device,
                 ]
             case _:
-                assert False, "Unsupported attack"
+                assert False, "Unsupported attack: " + attack_name
     return dict_param
 
 
 def parse_attacks():
+    """
+    Create a dictionnary contening all attacks function using attack names
+    in the config file
+    """
     dict_attack = {}
     for attack_name in FLAGS.attacks:
         dict_attack[attack_name] = get_attack(attack_name)
     return dict_attack
 
 
-def perform_attack(net, x, y, attacks, parameters):
+def perform_attack(net, x, y: int, attacks: dict, parameters: dict) -> list:
+    """
+    Perform all adversarial attacks, from the attacks dictionnary using the parameters
+    dictionnary, on the input sample x.
+
+    Args:
+        net: the model.
+        x: the input sample (Batch_size * C * H * W)
+        y: the true label of the sample
+        attacks: dictionnary containing all the attacks' functions
+        parameters: dictionnary containing all the attacks' parameters
+    Return:
+        y_pred_advs: list of the labels predicted by the model
+            on the adversarial examples.
+    """
     y_pred_advs = []
 
     for attack_name in FLAGS.attacks:
-        attack = attacks[attack_name]
-        param = parameters[attack_name]
-        x_adv = attack(net, x, *param)
-        _, y_pred_adv = net(x_adv).max(1)
-        y_pred_advs.append(y_pred_adv.eq(y).sum().item())
+        attack = attacks[attack_name] # get the attack
+        param = parameters[attack_name] # get the parameters
+        x_adv = attack(net, x, *param)  # perform the attack
+        _, y_pred_adv = net(x_adv).max(1) # compute the labels
+        y_pred_advs.append(y_pred_adv.eq(y).sum().item())  # store the number of correct labels
 
     return y_pred_advs
 
 
 def evaluation(net, data, device):
+    """
+    Compute and display the accuracy of the network on the clean samples
+    and all adversarial examples
+
+    Args:
+        net: the model.
+        data: easydict containing the training and test dataset.
+        device: device to use, either cpu or cuda.
+    """
     # Evaluate on clean and adversarial data
     net.eval()
+    # Gather all attacks function in a dictionnary
     attacks = parse_attacks()
+    # Define some basic parameters
     num_classes = FLAGS.num_classes
     norm = np.inf if FLAGS.norm == "inf" else int(FLAGS.norm)
     clip_min = FLAGS.clip_min
@@ -186,22 +241,29 @@ def evaluation(net, data, device):
     batch_size = 128
     for eps in list(map(float, FLAGS.eps)):
         print("For epsilon = ", eps)
+        # Parse the paremters for each attack
         parameters = parse_parameters(
             num_classes, eps, norm, clip_min, clip_max, batch_size, device
         )
+        # Define the dictionnary to log the accuracy
         report = dict(nb_test=0, base=0)
         for attack in FLAGS.attacks:
             report[attack] = 0
+
+        # Evaluation loop
         for x, y in tqdm(data.test, leave=False):
+            # Clean sample
             x, y = x.to(device), y.to(device)
-
             _, y_pred = net(x).max(1)  # model prediction on clean examples
+            # Adversarial examples
             y_preds_adv = perform_attack(net, x, y, attacks, parameters)
-
+            # Accuracy log
             report["nb_test"] += y.size(0)
             report["base"] += y_pred.eq(y).sum().item()
             for attack, y_pred_adv in zip(FLAGS.attacks, y_preds_adv):
                 report[attack] += y_pred_adv
+
+        # Display the accuracy
         print(
             "test acc on clean examples (%): {:.3f}".format(
                 report["base"] / report["nb_test"] * 100.0
@@ -216,6 +278,9 @@ def evaluation(net, data, device):
 
 
 def display_flag():
+    """
+    Display some flags value.
+    """
     print("+" + "-" * 40 + "+")
     print("Model:")
     print("Save", FLAGS.save)
@@ -244,7 +309,6 @@ def main(_):
 
 
 if __name__ == "__main__":
-
     flags.DEFINE_string("data", "", "The dataset to load.")
     flags.DEFINE_string("save", "", "The path to save the model.")
     flags.DEFINE_list("attacks", [], "List of all attacks to perform")

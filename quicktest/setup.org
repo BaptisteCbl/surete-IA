@@ -13,6 +13,10 @@ conda env create --file slim.yml
 conda activate RobustSlim
 #+end_src
 
+#+begin_src bash
+pip install -e .
+#+end_src
+
 Running the training from quicktest/
 #+begin_src bash
 python src/training.py  --flagfile=config_files/training.cfg
