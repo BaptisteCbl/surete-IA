@@ -36,8 +36,8 @@
 
 Attack classification
   
-|                  |   FGSM   | PGD | CW  | SPSA | Sparse | HSJA | DeepFool |   ZOO    |
+|      Features           |   FGSM   | PGD | CW  | SPSA | Sparse | HSJA | DeepFool |   ZOO    |
 | <l>              |   <c>    | <c> | <c> | <c>  |  <c>   | <c>  |   <c>    |   <c>    |
-| Gradient-based   | $\cmark$ |     |     |      |        |      |          | $\xmark$ |
+| Gradient-based   | $\checkmark$ |     |     |      |        |      |          | $\times$ |
 | Iterative method |          |     |     |      |        |      |          |          |
 | Norm             |          |     | l2  |      |   l1   |      |          |          |
