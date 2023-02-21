@@ -3,3 +3,5 @@ quicktest/data/*
 quicktest/deeprobust/*
 __pycache__
 src.egg-info
+quicktest/report.pdf
+quicktest/report.tex

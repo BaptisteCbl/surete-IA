@@ -1,6 +1,4 @@
-#+LATEX_HEADER:\usepackage{pifont}
-#+LATEX_HEADER:\newcommand{\cmark}{\ding{51}}
-#+LATEX_HEADER:\newcommand{\xmark}{\ding{55}}
+#+OPTIONS: ^:{}
 
 * Datasets
     - MNIST:
@@ -26,9 +24,9 @@
     - From [[https://github.com/cleverhans-lab/cleverhans][CleverHans]]:
         - fast_gradient_method (FGSM)
         - projected_gradient_descent (PGD)
-        - carlini_wagner_l2 (C&W $l_2$)
+        - carlini_wagner_l2 (C&W )
         - spsa
-        - sparse_l1_descent (Sp L1)
+        - sparse_l1_descent (SpD)
         - hop_skip_jump_attack (HSJA)
     - From [[https://github.com/DSE-MSU/DeepRobust][DeepRobust]]:
         - deepfool
@@ -36,8 +34,9 @@
 
 Attack classification
   
-|      Features           |   FGSM   | PGD | CW  | SPSA | Sparse | HSJA | DeepFool |   ZOO    |
-| <l>              |   <c>    | <c> | <c> | <c>  |  <c>   | <c>  |   <c>    |   <c>    |
-| Gradient-based   | $\checkmark$ |     |     |      |        |      |          | $\times$ |
-| Iterative method |          |     |     |      |        |      |          |          |
-| Norm             |          |     | l2  |      |   l1   |      |          |          |
+| Features         |          FGSM          |       PGD       |     CW     |    SpD     |         SPSA         |      HSJA       |  DeepFool  |    ZOO     |
+| <l>              |          <c>           |       <c>       |    <c>     |    <c>     |         <c>          |       <c>       |    <c>     |    <c>     |
+|------------------+------------------------+-----------------+------------+------------+----------------------+-----------------+------------+------------|
+| Gradient-based   |       \checkmark       |   \checkmark    | \checkmark | \checkmark |        \times        |     \times      |   \times   |   \times   |
+| Iterative method |         \times         |   \checkmark    | \checkmark | \checkmark |      \checkmark      |   \checkmark    | \checkmark | \checkmark |
+| Norm             | $l_{1},l_2,l_{\infty}$ | $l_2, l_\infty$ |   $l_2$    |   $l_1$    | $l_1, l_2, l_\infty$ | $l_2, l_\infty$ |   $l_2$    |            |
