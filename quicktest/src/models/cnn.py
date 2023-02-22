@@ -61,7 +61,6 @@ class cnn(nn.Module):
         self.fc = nn.Linear(128 * self.dim[0] * self.dim[1], out_channels)
 
     def forward(self, x):
-
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))

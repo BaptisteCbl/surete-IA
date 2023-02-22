@@ -3,6 +3,7 @@ import numpy as np
 import torch
 
 from tqdm import tqdm
+import time
 
 from src.attacks.fast_gradient_method import fast_gradient_method
 from src.attacks.projected_gradient_descent import (
@@ -15,6 +16,7 @@ FLAGS = flags.FLAGS
 
 
 def training(net, data, device, optimizer, loss_fn) -> None:
+    scaler = torch.cuda.amp.GradScaler()
     # Train vanilla model
     net.train()
     # Training loop
@@ -29,9 +31,14 @@ def training(net, data, device, optimizer, loss_fn) -> None:
                 # x = fast_gradient_method(net, x, FLAGS.eps, np.inf)
             # Optimization step
             optimizer.zero_grad()
-            loss = loss_fn(net(x), y)
-            loss.backward()
-            optimizer.step()
+            with torch.amp.autocast(device_type="cuda", dtype=torch.float16):
+                loss = loss_fn(net(x), y)
+            # loss.backward()
+            # optimizer.step()
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+
             train_loss += loss.item()
         # Display loss/epoch
         print(
@@ -85,7 +92,10 @@ def main(_):
     # Instantiate the optimizer
     optimizer = torch.optim.Adam(net.parameters(), lr=1e-3)
     print("+" + "-" * 40 + "+")
+    st = time.time()
     training(net, data, device, optimizer, loss_fn)
+    et = time.time()
+    print("Training time: ", et - st)
 
 
 if __name__ == "__main__":
@@ -111,4 +121,6 @@ if __name__ == "__main__":
     # seed the RNG for all devices (both CPU and CUDA)
     torch.manual_seed(42)
     np.random.seed(42)
+    torch.cuda.manual_seed(42)
+
     app.run(main)
