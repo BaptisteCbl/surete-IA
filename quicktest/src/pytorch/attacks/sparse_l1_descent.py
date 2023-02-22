@@ -11,7 +11,7 @@
 import numpy as np
 import torch
 
-from src.attacks.utils_attack import zero_out_clipped_grads
+from src.pytorch.attacks.utils_attack import zero_out_clipped_grads
 
 
 def sparse_l1_descent(

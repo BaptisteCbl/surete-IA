@@ -11,7 +11,7 @@
 import numpy as np
 import torch
 from torch import optim
-from src.attacks.utils_attack import clip_eta
+from src.pytorch.attacks.utils_attack import clip_eta
 
 
 def spsa(

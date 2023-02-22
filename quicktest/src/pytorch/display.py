@@ -1,10 +1,10 @@
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
-from src.utils import *
+from src.pytorch.utils import *
 import torch.nn.functional as F
 from numpy import linalg as la
-from src.evaluation import parse_attacks, parse_parameters
+from src.pytorch.evaluation import parse_attacks, parse_parameters
 from absl import app, flags
 
 FLAGS = flags.FLAGS

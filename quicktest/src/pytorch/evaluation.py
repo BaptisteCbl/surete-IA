@@ -3,9 +3,9 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from src.utils import *
+from src.pytorch.utils import *
 
-# from src.attacks import *
+# from src.pytorch.attacks import *
 
 FLAGS = flags.FLAGS
 
