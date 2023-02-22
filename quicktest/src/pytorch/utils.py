@@ -67,7 +67,12 @@ def load_data(data_name: str, batch_size: int) -> EasyDict:
     )
     # Define the loader
     train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, num_workers=2
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=4,
+        pin_memory=True,
+        prefetch_factor=2,
     )
     test_loader = torch.utils.data.DataLoader(
         test_dataset, batch_size=batch_size, shuffle=False, num_workers=2

@@ -17,6 +17,10 @@ FLAGS = flags.FLAGS
 
 def training(net, data, device, optimizer, loss_fn) -> None:
     scaler = torch.cuda.amp.GradScaler()
+    # optimize = torch.optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
+    # scheduler = torch.optim.lr_scheduler.CyclicLR(
+    # optimizer, base_lr=0.01, max_lr=0.1, cycle_momentum=False
+    # )
     # Train vanilla model
     net.train()
     # Training loop
@@ -30,7 +34,7 @@ def training(net, data, device, optimizer, loss_fn) -> None:
                 x = projected_gradient_descent(net, x, FLAGS.eps, 0.01, 40, np.inf)
                 # x = fast_gradient_method(net, x, FLAGS.eps, np.inf)
             # Optimization step
-            optimizer.zero_grad()
+            optimizer.zero_grad(set_to_none=True)
             with torch.amp.autocast(device_type="cuda", dtype=torch.float16):
                 loss = loss_fn(net(x), y)
             # loss.backward()
@@ -38,6 +42,7 @@ def training(net, data, device, optimizer, loss_fn) -> None:
             scaler.scale(loss).backward()
             scaler.step(optimizer)
             scaler.update()
+            # scheduler.step()
 
             train_loss += loss.item()
         # Display loss/epoch
@@ -90,7 +95,7 @@ def main(_):
     # Instantiate the loss function
     loss_fn = torch.nn.CrossEntropyLoss(reduction="mean")
     # Instantiate the optimizer
-    optimizer = torch.optim.Adam(net.parameters(), lr=1e-3)
+    optimizer = torch.optim.AdamW(net.parameters())
     print("+" + "-" * 40 + "+")
     st = time.time()
     training(net, data, device, optimizer, loss_fn)
