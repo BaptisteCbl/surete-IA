@@ -5,12 +5,12 @@ import torch
 from tqdm import tqdm
 import time
 
-from src.attacks.fast_gradient_method import fast_gradient_method
-from src.attacks.projected_gradient_descent import (
+from src.pytorch.attacks.fast_gradient_method import fast_gradient_method
+from src.pytorch.attacks.projected_gradient_descent import (
     projected_gradient_descent,
 )
 
-from src.utils import *
+from src.pytorch.utils import *
 
 FLAGS = flags.FLAGS
 

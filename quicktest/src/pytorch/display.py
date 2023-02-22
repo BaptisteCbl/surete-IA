@@ -1,10 +1,10 @@
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
-from src.utils import *
+from src.pytorch.utils import *
 import torch.nn.functional as F
 from numpy import linalg as la
-from src.evaluation import parse_attacks, parse_parameters
+from src.pytorch.evaluation import parse_attacks, parse_parameters
 from absl import app, flags
 
 FLAGS = flags.FLAGS
@@ -98,7 +98,9 @@ def visualize(
     if rgb:
         ax[1].imshow(np.clip(pert / la.norm(pert.flatten(), np.inf), 0, 1))
     else:
-        ax[1].imshow(pert, cmap="Greys")
+        ax[1].imshow(
+            np.clip(pert / la.norm(pert.flatten(), np.inf), 0, 1), cmap="Greys"
+        )
 
     ax[1].set_title("Perturbation", fontsize=20)
     ax[1].set_yticklabels([])
@@ -166,7 +168,7 @@ def visualize(
 
 def main(_):
     # Load the data and retrieve the first batch
-    data = load_data(FLAGS.data)
+    data = load_data(FLAGS.data, FLAGS.batchsize)
     first_batch = next(iter(data.test))
     batch = first_batch[0]
     label = first_batch[1]
@@ -226,6 +228,8 @@ def main(_):
 
 if __name__ == "__main__":
     flags.DEFINE_string("data", "", "The dataset to load.")
+    flags.DEFINE_integer("batchsize", 0, "The batch size for the loader.")
+
     flags.DEFINE_string("save", "", "The path to save the model.")
     flags.DEFINE_list("attacks", [], "List of all attacks to perform")
     flags.DEFINE_integer("num_classes", 10, "Number of classes in the dataset")

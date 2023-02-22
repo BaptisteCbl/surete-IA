@@ -11,7 +11,7 @@
 import numpy as np
 import torch
 
-from src.attacks.utils_attack import optimize_linear
+from src.pytorch.attacks.utils_attack import optimize_linear
 
 
 def fast_gradient_method(
