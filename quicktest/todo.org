@@ -1,0 +1,37 @@
+* STRT Code organisation [0/5]
+- [ ] Multiple precision without if/else (preprocessor?)
+- [ ] Regroup the code, use same models/data
+- [ ] Change model froward (Flatten)
+- [ ] Factorize code + separate into functions
+- [ ] Add logging for all training codes
+
+* TODO Training [0/4]
+- [ ] Define stopping criterion:
+  - Epochs | Execution time | Accuracy | other ?
+- [ ] Choose a model:
+  - depth | number of parameters | ...
+- [ ] Base training:
+  - MNIST, FashionMNIST
+- [ ] Adversarial training:
+  - [ ] Basic loop (FGSM +? PGD)
+  - [ ] Fast FGSM+PGD
+  - [ ] Fast V2 PGD
+
+* TODO Benchmarks [0/2]
+- [ ] Gradient-based [0/3]
+  - [ ] FGSM
+  - [ ] PGD
+  - [ ] C&W
+- [ ] Gradient-free
+  - [ ] SPSA
+  - [ ] HSJA
+  - [ ] Deepfool
+-
+
+* TODO metrics [0/1]
+- [ ] Plot training loss/accuracy
+- [ ] Accuracy against attacks (cf Benchmarks)
+
+* IDEA
+- Computing budget similar for training/attack (do not test a 15min attack on a image
+  when the whole training took 15min)
