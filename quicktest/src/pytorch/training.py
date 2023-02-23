@@ -30,12 +30,14 @@ def training(net, data, device, optimizer, loss_fn) -> None:
             x, y = x.to(device), y.to(device)
             # TODO flag to choose the attack
             # Replace clean example with adversarial example for adversarial training
-            if FLAGS.adv_train:
-                x = projected_gradient_descent(net, x, FLAGS.eps, 0.01, 40, np.inf)
-                # x = fast_gradient_method(net, x, FLAGS.eps, np.inf)
+
+            # x = fast_gradient_method(net, x, FLAGS.eps, np.inf)
             # Optimization step
             optimizer.zero_grad(set_to_none=True)
             with torch.amp.autocast(device_type="cuda", dtype=torch.float16):
+                if FLAGS.adv_train:
+                    # x = fast_gradient_method(net, x, FLAGS.eps, np.inf)
+                    x = projected_gradient_descent(net, x, FLAGS.eps, 0.01, 40, np.inf)
                 loss = loss_fn(net(x), y)
             # loss.backward()
             # optimizer.step()
