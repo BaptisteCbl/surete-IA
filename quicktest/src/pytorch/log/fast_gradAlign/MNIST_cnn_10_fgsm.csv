@@ -1,0 +1,4 @@
+ # Namespace(batch_size=256, data_dir='cifar-data', dataset='MNIST', model='cnn', epochs=30, lr_schedule='cyclic', lr_max=0.003, attack='fgsm', eps=10.0, attack_iters=10, pgd_train_n_iters=10, pgd_alpha_train=2.0, fgsm_alpha=1.25, minibatch_replay=1, weight_decay=0.0005, attack_init='zero', fname='plain_cifar10', seed=0, gpu=0, debug=False, half_prec=False, grad_align_cos_lambda=0.0, eval_early_stopped_model=False, eval_iter_freq=255, n_eval_every_k_iter=256, n_layers=1, n_filters_cnn=4, batch_size_eval=256, n_final_eval=1000)
+ Epoch,Train loss,Train acc clean,Train acc PGD, Test acc clean,Test acc FGSM,Test acc PGD,Training time,Time elapsed
+ 0,2.3804,0.0078,0.0156,0.0977,0.0234,0.0117,0.00,0.06
+ 2,0.4461,0.8622,0.8477,0.9609,0.8906,0.8906,0.54,0.85

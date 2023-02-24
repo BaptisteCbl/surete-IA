@@ -1,2 +1,0 @@
-[2023/02/22 19:00:24] - Namespace(batch_size=512, data_dir='data/CIFAR10/', epochs=10, lr_schedule='cyclic', lr_min=0.0, lr_max=0.2, weight_decay=0.0005, momentum=0.9, epsilon=8, attack_iters=7, restarts=1, alpha=2, delta_init='random', out_dir='train_pgd_output', seed=0, opt_level='O2', loss_scale='1.0', master_weights=False)
-[2023/02/22 19:00:26] - Epoch 	 Seconds 	 LR 	 	 Train Loss 	 Train Acc

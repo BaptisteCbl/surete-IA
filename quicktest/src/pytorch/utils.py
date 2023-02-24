@@ -2,6 +2,7 @@ import torch
 import torchvision
 from easydict import EasyDict
 from typing import Callable
+import src.pytorch.models
 
 
 def get_model(model_name: str) -> torch.nn.Module:
@@ -16,8 +17,10 @@ def get_model(model_name: str) -> torch.nn.Module:
     """
     # __import__ method used
     # to fetch module
-    module_models = __import__("models." + model_name)
-    module_model = getattr(module_models, model_name)
+    module_models = __import__("src.pytorch.models." + model_name)
+    module_model = getattr(module_models, "pytorch")
+    module_model = getattr(module_model, "models")
+    module_model = getattr(module_model, model_name)
     my_model = getattr(module_model, model_name)
     return my_model
 
@@ -32,7 +35,9 @@ def get_attack(attack_name: str) -> Callable:
         is the equivalent to
         from cleverhans.torch.attacks.fast_gradient_method import fast_gradient_method
     """
-    module = __import__("attacks." + attack_name)
+    module = __import__("src.pytroch.attacks." + attack_name)
+    module = getattr(module, "pytorch")
+    module = getattr(module, "attacks")
     moduleAtk = getattr(module, attack_name)
     attack = getattr(moduleAtk, attack_name)
     return attack

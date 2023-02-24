@@ -1,7 +1,7 @@
-* STRT Code organisation [0/5]
+* STRT Code organisation [2/5]
 - [ ] Multiple precision without if/else (preprocessor?)
-- [ ] Regroup the code, use same models/data
-- [ ] Change model froward (Flatten)
+- [X] Regroup the code, use same models/data
+- [X] Change model forward (Flatten)
 - [ ] Factorize code + separate into functions
 - [ ] Add logging for all training codes
 

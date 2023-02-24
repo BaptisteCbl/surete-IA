@@ -38,14 +38,14 @@ class cnn(nn.Module):
 
         kernel_size = (8, 8)
         stride = (1, 1)
-        self.conv1 = nn.Conv2d(in_channels, 64, kernel_size=kernel_size, stride=stride)
+        self.conv1 = nn.Conv2d(in_channels, 32, kernel_size=kernel_size, stride=stride)
         self.dim = output_dims(
             self.dim[0], self.dim[1], kernel_size=kernel_size, stride=stride
         )
 
         kernel_size = (6, 6)
         stride = (2, 2)
-        self.conv2 = nn.Conv2d(64, 128, 6, 2)
+        self.conv2 = nn.Conv2d(32, 64, 6, 2)
         self.dim = output_dims(
             self.dim[0], self.dim[1], kernel_size=kernel_size, stride=stride
         )
@@ -53,17 +53,17 @@ class cnn(nn.Module):
 
         kernel_size = (5, 5)
         stride = (2, 2)
-        self.conv3 = nn.Conv2d(128, 128, 5, 2)
+        self.conv3 = nn.Conv2d(64, 32, 5, 2)
 
         self.dim = output_dims(
             self.dim[0], self.dim[1], kernel_size=kernel_size, stride=stride
         )
-        self.fc = nn.Linear(128 * self.dim[0] * self.dim[1], out_channels)
+        self.fc = nn.Linear(32 * self.dim[0] * self.dim[1], out_channels)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
-        x = x.view(-1, 128 * self.dim[0] * self.dim[1])
+        x = torch.flatten(x, 1)
         x = self.fc(x)
         return x
