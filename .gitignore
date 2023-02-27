@@ -1,7 +1,6 @@
 .spyproject
-quicktest/data/*
-quicktest/deeprobust/*
+adversarial/data/*
 __pycache__
 src.egg-info
-quicktest/report.pdf
-quicktest/report.tex
+adversarial/report.pdf
+adversarial/report.tex

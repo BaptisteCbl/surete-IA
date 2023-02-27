@@ -25,7 +25,7 @@ pip install -e .
 
 * Running the  scripts
 
-Running the basic training from quicktest/
+Running the basic training from adversarial/
 #+begin_src bash
 python src/pytorch/training.py  --flagfile=config_files/training.cfg
 #+end_src
