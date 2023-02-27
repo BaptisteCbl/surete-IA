@@ -1,3 +1,13 @@
+"""***************************************************************************************
+* Code taken and ajusted (removed nvidia apex amp dependencies + custom load model/data, logging)
+* from
+*    Title: fast_adversarial
+*    Date: 27/02/2023
+*    Availability: https://github.com/locuslab/fast_adversarial/blob/master/CIFAR10/train_fgsm.py
+*
+***************************************************************************************"""
+
+
 import argparse
 import copy
 import logging

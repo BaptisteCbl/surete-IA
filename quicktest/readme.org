@@ -1,36 +1,45 @@
 
 
 * Installation from fresh environment.
-
+** Create the environment (might be slow):
 #+begin_src bash
-conda env create --file slim.yml
+conda env create --file robust.yml
 #+end_src
 
+- If the installation is stuck on ~Solving environment: |~ try:
+#+BEGIN_SRC bash
+conda config --set channel_priority strict
+#+END_SRC
+- Revert with:
+#+BEGIN_SRC bash
+conda config --set channel_priority true
+#+END_SRC
+** Activate the environment:
 #+begin_src bash
-conda activate RobustSlim
+conda activate Robust
 #+end_src
-
+** Setup project:
 #+begin_src bash
 pip install -e .
 #+end_src
 
-* Running the scripts
+* Running the  scripts
 
-Running the training from quicktest/
+Running the basic training from quicktest/
 #+begin_src bash
-python src/training.py  --flagfile=config_files/training.cfg
+python src/pytorch/training.py  --flagfile=config_files/training.cfg
 #+end_src
 
 Running the evaluation
 #+begin_src bash
-python src/evaluation.py  --flagfile=config_files/evaluation.cfg
+python src/pytorch/evaluation.py  --flagfile=config_files/evaluation.cfg
 #+end_src
 
 ** The configuration files
 
 We use the /abseil/ library to pass parameters to the code with the ~FLAGS~ from a config file using the ~flagfile~ parameter when executing a python script.
 We use two configuration files one for training and one for the evaluation. The display configuration file is the same as the evaluation one.
-*** Training configuration file
+*** Basic training configuration file
 - For the *model*
     - ~model~ the model's name which can be found in ~src/models~. The model's class name must be the name as the module name (e.g. cnn.py and class cnn()).
     - ~save~ the name to use when saving the model.
@@ -65,11 +74,24 @@ We use two configuration files one for training and one for the evaluation. The 
 
 ** The project code
 
-- *models* are defined in ~src/models~. 
-- *saved* models are in ~/saves~. 
+- *models* are defined in ~src/pytorch/models~. 
+- *saved* models are in ~src/pytorch/saves/<approach>~. 
 - *configuration* files are in ~config_files~. 
-- *data* are (locally) saved in ~/data~. 
-- *training*, *evaluation* and *display* scripts are in ~src/~.
+- *data* are (locally) saved in ~data/~. 
+-  *evaluation* and *display* scripts are in ~src/pytorch~.
 - *attacks* are in ~src/attacks~ they come from [[https://github.com/cleverhans-lab/cleverhans][CleverHans]]
  and [[https://github.com/DSE-MSU/DeepRobust][DeepRobust]]. The attacks from *CleverHans* work out of the box, 
  the attacks from *DeepRobust* have been modified to take in inputs batch of images instead of a single image.
+- There are 3 different approach to train a model: 
+    - ~src/pytorch/basic/~ which is "basic" training loop working with all model/data pairs, it can be used to
+    perfrom adversarial training
+    - ~src/pytorch/fast~ based on [[https://github.com/locuslab/fast_adversarial][fast adversarial]] training approach. There are two folders one 
+    to work on MNIST/FashionMnist and one to work on CIFAR10.
+    - ~src/pytorch/fast_gradAlign~ based on another [[https://github.com/tml-epfl/understanding-fast-adv-training][fast adversarial]] training approach.
+    It works on MNIST, FashionMNIST and CIFAR10.
+
+** Logs 
+In the log file we store the training loss/accuracy/time (and test in the gradAlign) by epoch.
+The file are in .csv format using logging. The gnuplot script allows to quicly plot some data.
+
+** TODO detail fast approach

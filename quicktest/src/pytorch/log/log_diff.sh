@@ -1,6 +1,7 @@
 # Script to compare the parameters described in the first line of the log files.
 # Example:
 # source src/pytorch/log/log_diff.sh src/pytorch/log/fast_gradAlign/MNIST_cnn_8_fgsm.csv src/pytorch/log/fast_gradAlign/MNIST_cnn_10_fgsm.csv
+# @author: GuillaumeCld
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'

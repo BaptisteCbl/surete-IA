@@ -1,6 +1,12 @@
-"""
-This code is partially based on the repository of https://github.com/locuslab/fast_adversarial (Wong et al., ICLR'20)
-"""
+"""***************************************************************************************
+* Code taken and ajusted (removed nvidia apex amp dependencies + custom load model/data, logging)
+ from
+*    Title: understanding-fast-adv-training 
+*    Date: 27/02/2023
+*    Availability: https://github.com/tml-epfl/understanding-fast-adv-training/train.py
+*
+***************************************************************************************"""
+
 import argparse
 import logging
 import os

@@ -1,8 +1,13 @@
+"""
+Functions to load datasets from torchvision and model/attacks from project only
+using their names.
+@author: GuillaumeCld
+"""
+import os
 import torch
 import torchvision
 from easydict import EasyDict
 from typing import Callable
-import src.pytorch.models
 
 
 def get_model(model_name: str) -> torch.nn.Module:
@@ -54,8 +59,7 @@ def load_data(data_name: str, batch_size: int) -> EasyDict:
         import torchvision.datasets.MNIST as data
     """
     data = getattr(torchvision.datasets, data_name)
-    root = "./data/" + data_name
-
+    root = os.getcwd() + "/data/"  # + data_name
     # Define the transformations to the data
     train_transforms = torchvision.transforms.Compose(
         [torchvision.transforms.ToTensor()]

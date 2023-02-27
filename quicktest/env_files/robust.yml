@@ -1,20 +1,22 @@
+# Create a conda environment containing all the necessary dependencies 
+#
+# conda env create --file robust.yml
+# conda activate Robust
+
 name: Robust
 channels: 
     - pytorch
     - nvidia
     - conda-forge 
 dependencies: 
-  - nvidia::cudatoolkit=11.7  # based on nvidia-smi
-  - python=3.10
-  - pytorch
-  - torchvision
-  - numpy
-  - tqdm
-  - black
-  - easydict
-  - absl-py
-  - typing
-  - matplotlib
-
-# conda env create --file slim.yml
-# conda actiave RobustSlim
+  - nvidia::cudatoolkit=11.7    # based on nvidia-smi, needed for pytorch on gpu
+  - python=3.10                                       
+  - pytorch                       
+  - torchvision                       
+  - numpy                       
+  - tqdm                        # progress bar on loops
+  - black                       # python formatter
+  - easydict                    # dict whose values are accessible as attributes
+  - absl-py                     # Flags to add parameters to a script  
+  - typing                      # to specify the type of functions
+  - matplotlib                        

@@ -1,3 +1,17 @@
+"""
+Script to evaluate the performance of a model. 
+The model to load, data to use, and attacks to perform and their parameters
+can be modified in config_files/evaluation.cfg
+
+Example:
+python src/pytorch/evaluation.py --flagfile=config_files/evaluation.cfg 
+
+The parameters of the config file can be overwritten:
+python src/pytorch/evaluation.py --flagfile=config_files/evaluation.cfg  --save=fast_gradAlignMNIST_cnn_10_fgsm_epoch=30
+
+@author: GuillaumeCld
+"""
+
 from absl import app, flags
 import numpy as np
 import torch

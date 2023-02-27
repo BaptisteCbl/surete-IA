@@ -1,7 +1,13 @@
-import os
+"""***************************************************************************************
+* Code taken from
+*    Title: understanding-fast-adv-training 
+*    Date: 27/02/2023
+*    Availability: https://github.com/tml-epfl/understanding-fast-adv-training/data.py
+*
+***************************************************************************************"""
+
+
 import torch
-import torch.utils.data as td
-import numpy as np
 from torchvision import datasets, transforms
 
 
@@ -47,10 +53,7 @@ def get_loaders(dataset, n_ex, batch_size, train_set, shuffle, data_augm):
 datasets_dict = {
     "MNIST": datasets.MNIST,
     "FashionMNIST": datasets.FashionMNIST,
-    "svhn": datasets.SVHN,
     "CIFAR10": datasets.CIFAR10,
-    "cifar10_binary": datasets.CIFAR10,
-    "cifar10_binary_gs": datasets.CIFAR10,
 }
 shapes_dict = {
     "MNIST": (60000, 1, 28, 28),

@@ -1,3 +1,15 @@
+"""***************************************************************************************
+* Code taken and ajusted (removed nvidia apex amp dependencies + custom load model/data, logging)
+ from
+*    Title: fast_adversarial
+*    Date: 27/02/2023
+*    Availability: https://github.com/locuslab/fast_adversarial
+*
+* Example:
+* python train_mnist.py --fname models/pgd_madry.pth --attack pgd --alpha 0.01 --lr-type flat --lr-max 0.0001 --epochs 100 --batch-size 50
+***************************************************************************************"""
+
+
 import argparse
 import logging
 import time

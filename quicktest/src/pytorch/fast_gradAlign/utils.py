@@ -1,3 +1,13 @@
+"""***************************************************************************************
+* Code taken and ajusted (removed nvidia apex amp dependencies)
+* from
+*    Title: understanding-fast-adv-training 
+*    Date: 27/02/2023
+*    Availability: https://github.com/tml-epfl/understanding-fast-adv-training/utils.py
+*
+***************************************************************************************"""
+
+
 import logging
 import math
 import os

@@ -1,3 +1,15 @@
+"""
+Script to train a model, it consists in a "classing" training loop over epoch. 
+The model to load, data to use, and some hyperparameters can be modified 
+in config_files/training.cfg
+
+Example:
+python src/pytorch/basic/training.py --flagfile=config_files/training.cfg
+
+@author: GuillaumeCld
+"""
+
+
 from absl import app, flags
 import numpy as np
 import torch
@@ -74,8 +86,8 @@ def training(net, data, device, optimizer, loss_fn) -> None:
                 epoch,
                 train_loss,
                 train_acc / tot * 100,
-                time_epoch ,
-                total_time ,
+                time_epoch,
+                total_time,
             )
         )
         # Display loss/epoch

@@ -1,21 +1,23 @@
-* STRT Code organisation [2/5]
-- [ ] Multiple precision without if/else (preprocessor?)
+* STRT Code organisation [3/3]
+# - [ ] Multiple precision without if/else (preprocessor?)
 - [X] Regroup the code, use same models/data
 - [X] Change model forward (Flatten)
-- [ ] Factorize code + separate into functions
-- [ ] Add logging for all training codes
+# - [ ] Factorize code + separate into functions
+- [X] Add logging for all training codes
 
-* TODO Training [0/4]
-- [ ] Define stopping criterion:
+* TODO Training [1/5]
+- [X] Define stopping criterion:
   - Epochs | Execution time | Accuracy | other ?
+- [ ] Normalize training data ?
 - [ ] Choose a model:
   - depth | number of parameters | ...
 - [ ] Base training:
-  - MNIST, FashionMNIST
+  - MNIST, FashionMNIST + CIFAR10 ?
 - [ ] Adversarial training:
   - [ ] Basic loop (FGSM +? PGD)
-  - [ ] Fast FGSM+PGD
-  - [ ] Fast V2 PGD
+  - [ ] Fast FGSM+PGD+FREE but hyperparameter tuning needed before
+    to have some convergence
+  - [ ] Fast gradAlign None+FGSM+PGD+other?
 
 * TODO Benchmarks [0/2]
 - [ ] Gradient-based [0/3]

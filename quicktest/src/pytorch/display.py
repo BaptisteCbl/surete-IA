@@ -1,3 +1,13 @@
+"""
+Script to display a clean image, the perturbation and the adversarial example.
+The model to load, data to use, and attacks to perform can be modified in config_files/display.cfg
+
+Example:
+python src/pytorch/display.py --flagfile=config_files/display.cfg
+
+@author: GuillaumeCld
+"""
+
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
@@ -6,6 +16,7 @@ import torch.nn.functional as F
 from numpy import linalg as la
 from src.pytorch.evaluation import parse_attacks, parse_parameters
 from absl import app, flags
+import os
 
 FLAGS = flags.FLAGS
 
@@ -81,6 +92,7 @@ def visualize(
     y_prob,
     y_adv,
     y_adv_prob,
+    attack: str,
     rgb: bool = False,
     cifar10: bool = False,
 ):
@@ -162,7 +174,7 @@ def visualize(
         ha="center",
         transform=ax[2].transAxes,
     )
-
+    figure.suptitle("Adversarial example for the {} attack".format(attack))
     plt.show()
 
 
@@ -173,7 +185,7 @@ def main(_):
     batch = first_batch[0]
     label = first_batch[1]
     # Load the model
-    net = torch.load("./saves/" + FLAGS.save + ".pt")
+    net = torch.load(os.getcwd() + "/src/pytorch/saves/" + FLAGS.save + ".pt")
     # Load the model on GPU if available
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if device == "cuda":
@@ -210,7 +222,7 @@ def main(_):
             param,
         )
 
-        for i in range(len(FLAGS.attacks)):
+        for i, attack in enumerate(FLAGS.attacks):
             x_adv = x_advs[i]
             y_adv = toNumpy(y_pred_advs[i])[0]
             y_adv_prob = toNumpy(y_prob_advs[i])[0] * 100
@@ -221,6 +233,7 @@ def main(_):
                 y_prob,
                 y_adv,
                 y_adv_prob,
+                attack,
                 rgb=FLAGS.data != "MNIST",
                 cifar10=FLAGS.data == "CIFAR10",
             )

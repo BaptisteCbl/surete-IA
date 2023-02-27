@@ -1,3 +1,13 @@
+"""***************************************************************************************
+* Code taken and ajusted (removed nvidia apex amp dependencies + custom load model/data, logging)
+* from
+*    Title: fast_adversarial
+*    Date: 27/02/2023
+*    Availability: https://github.com/locuslab/fast_adversarial/blob/master/CIFAR10/train_free.py
+*
+***************************************************************************************"""
+
+
 import argparse
 import logging
 import os
@@ -8,15 +18,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from tqdm import tqdm
-from utils import (
-    upper_limit,
-    lower_limit,
-    std,
-    clamp,
-    get_loaders,
-    evaluate_pgd,
-    evaluate_standard,
-)
+from utils import clamp, lower_limit, std, upper_limit
+
 from src.pytorch.utils import get_model, load_data
 
 logger = logging.getLogger(__name__)
