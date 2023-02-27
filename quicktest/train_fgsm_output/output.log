@@ -1,0 +1,1 @@
+[2023/02/27 21:33:06] - Namespace(batch_size=128, data_dir='../../cifar-data', epochs=15, lr_schedule='cyclic', lr_min=0.0, lr_max=0.2, weight_decay=0.0005, momentum=0.9, epsilon=8, alpha=10, delta_init='random', out_dir='train_fgsm_output', seed=0, early_stop=False, opt_level='O2', loss_scale='1.0', master_weights=False)

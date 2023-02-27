@@ -32,16 +32,11 @@ def get_args():
     parser.add_argument("--data_dir", default="cifar-data", type=str)
     parser.add_argument(
         "--dataset",
-        default="MNIST",
+        default="CIFAR10",
         choices=[
             "MNIST",
             "FashionMNIST",
-            "svhn",
             "CIFAR10",
-            "cifar10_binary",
-            "cifar10_binary_gs",
-            "uniform_noise",
-            "imagenet",
         ],
         type=str,
     )
@@ -173,7 +168,7 @@ def main():
     )
     logger.info("# " + str(args))
     logger.info(
-        "Epoch,Train loss,Train acc clean,Train acc PGD, Test acc clean,Test acc FGSM,Test acc PGD,Learning Rate, Training time,Time elapsed"
+        "Epoch,Train loss,Train acc clean,Train acc PGD, Test acc clean,Test acc FGSM,Test acc PGD,Training time,Time elapsed"
     )
 
     half_prec = args.half_prec
@@ -193,7 +188,7 @@ def main():
         args.pgd_alpha / 255,
         args.pgd_alpha_train / 255,
     )
-    train_data_augm = False if args.dataset in ["MNIST", "FashionMNIST"] else True
+    train_data_augm = False if args.dataset in ["MNIST", "Fashion_MNIST"] else True
     print(args.dataset)
     train_batches = data.get_loaders(
         args.dataset,
@@ -449,115 +444,102 @@ def main():
                 )  # we should measure delta after the projection onto [0, 1]^d
                 avg_delta_l2 += ((delta_final**2).sum([1, 2, 3]) ** 0.5).sum().item()
 
-            if iteration % args.eval_iter_freq == 0:
-                train_loss, train_reg = train_loss / train_n, train_reg / train_n
-                train_acc, avg_delta_l2 = train_acc / train_n, avg_delta_l2 / train_n
-
-                # it'd be incorrect to recalculate the BN stats on the test sets and for clean / adversarial points
-                utils.model_eval(model, half_prec)
-
-                test_acc_clean, _, _ = rob_acc(
-                    test_batches_fast,
-                    model,
-                    eps,
-                    pgd_alpha,
-                    opt,
-                    half_prec,
-                    scaler,
-                    0,
-                    1,
-                )
-                test_acc_fgsm, test_loss_fgsm, fgsm_deltas = rob_acc(
-                    test_batches_fast,
-                    model,
-                    eps,
-                    eps,
-                    opt,
-                    half_prec,
-                    scaler,
-                    1,
-                    1,
-                    rs=False,
-                )
-                test_acc_pgd, test_loss_pgd, pgd_deltas = rob_acc(
-                    test_batches_fast,
-                    model,
-                    eps,
-                    pgd_alpha,
-                    opt,
-                    half_prec,
-                    scaler,
-                    args.attack_iters,
-                    1,
-                )
-                # cos_fgsm_pgd = utils.avg_cos_np(fgsm_deltas, pgd_deltas)
-                train_acc_pgd, _, _ = rob_acc(
-                    train_batches_fast,
-                    model,
-                    eps,
-                    pgd_alpha,
-                    opt,
-                    half_prec,
-                    scaler,
-                    args.attack_iters,
-                    1,
-                )  # needed for early stopping
-
-                # grad_x = utils.get_grad_np(
-                #     model, test_batches_fast, eps, opt, half_prec, scaler, rs=False
-                # )
-                # grad_eta = utils.get_grad_np(
-                #     model, test_batches_fast, eps, opt, half_prec, scaler, rs=True
-                # )
-                # cos_x_eta = utils.avg_cos_np(grad_x, grad_eta)
-
-                time_elapsed = time.time() - start_time
-                train_str = "{:.4f},{:.4f},{:.4f}".format(
-                    train_loss, train_acc, train_acc_pgd
-                )
-                test_str = "{:.4f},{:.4f},{:.4f}".format(
-                    test_acc_clean, test_acc_fgsm, test_acc_pgd
-                )
-                logger.info(
-                    "{},{},{},{:.2f},{:.2f}".format(
-                        epoch,
-                        train_str,
-                        test_str,
-                        lr,
-                        time_train / 60,
-                        time_elapsed / 60,
-                    )
-                )
-
-                if (
-                    train_acc_pgd > train_acc_pgd_best
-                ):  # catastrophic overfitting can be detected on the training set
-                    best_state_dict = copy.deepcopy(model.state_dict())
-                    train_acc_pgd_best, best_iteration = train_acc_pgd, iteration
-
-                utils.model_train(model, half_prec)
-                train_loss, train_reg, train_acc, train_n, grad_norm_x, avg_delta_l2 = (
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                )
-
-            iteration += 1
+            train_loss, train_reg = train_loss / train_n, train_reg / train_n
+            train_acc, avg_delta_l2 = train_acc / train_n, avg_delta_l2 / train_n
             X_prev, y_prev = X.clone(), y.clone()  # needed for Free-AT
+            # it'd be incorrect to recalculate the BN stats on the test sets and for clean / adversarial points
+        utils.model_eval(model, half_prec)
+        test_acc_clean, _, _ = rob_acc(
+            test_batches_fast,
+            model,
+            eps,
+            pgd_alpha,
+            opt,
+            half_prec,
+            scaler,
+            0,
+            1,
+        )
+        test_acc_fgsm, test_loss_fgsm, fgsm_deltas = rob_acc(
+            test_batches_fast,
+            model,
+            eps,
+            eps,
+            opt,
+            half_prec,
+            scaler,
+            1,
+            1,
+            rs=False,
+        )
+        test_acc_pgd, test_loss_pgd, pgd_deltas = rob_acc(
+            test_batches_fast,
+            model,
+            eps,
+            pgd_alpha,
+            opt,
+            half_prec,
+            scaler,
+            args.attack_iters,
+            1,
+        )
+        # cos_fgsm_pgd = utils.avg_cos_np(fgsm_deltas, pgd_deltas)
+        train_acc_pgd, _, _ = rob_acc(
+            train_batches_fast,
+            model,
+            eps,
+            pgd_alpha,
+            opt,
+            half_prec,
+            scaler,
+            args.attack_iters,
+            1,
+        )  # needed for early stopping
+
+        # grad_x = utils.get_grad_np(
+        #     model, test_batches_fast, eps, opt, half_prec, scaler, rs=False
+        # )
+        # grad_eta = utils.get_grad_np(
+        #     model, test_batches_fast, eps, opt, half_prec, scaler, rs=True
+        # )
+        # cos_x_eta = utils.avg_cos_np(grad_x, grad_eta)
+
+        time_elapsed = time.time() - start_time
+        train_str = "{:.4f},{:.4f},{:.4f}".format(train_loss, train_acc, train_acc_pgd)
+        test_str = "{:.4f},{:.4f},{:.4f}".format(
+            test_acc_clean, test_acc_fgsm, test_acc_pgd
+        )
+        logger.info(
+            "{},{},{},{:.2f},{:.2f}".format(
+                epoch,
+                train_str,
+                test_str,
+                time_train / 60,
+                time_elapsed / 60,
+            )
+        )
+
+        if (
+            train_acc_pgd > train_acc_pgd_best
+        ):  # catastrophic overfitting can be detected on the training set
+            best_state_dict = copy.deepcopy(model.state_dict())
+            train_acc_pgd_best, best_iteration = train_acc_pgd, iteration
+
+        utils.model_train(model, half_prec)
+        train_loss, train_reg, train_acc, train_n, grad_norm_x, avg_delta_l2 = (
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+        )
 
         if epoch == args.epochs:
-            # torch.save(
-            #     {"last": model.state_dict(), "best": best_state_dict},
-            #     "src/pytorch/saves/fast_gradAlign{}_epoch={}.pt".format(
-            #         model_name, epoch
-            #     ),
-            # )
             torch.save(
-                model,
-                "src/pytorch/saves/fast_gradAlign/{}_epoch={}.pt".format(
+                {"last": model.state_dict(), "best": best_state_dict},
+                os.getcwd()
+                + "/src/pytorch/saves/fast_gradAlign{} epoch={}.pth".format(
                     model_name, epoch
                 ),
             )

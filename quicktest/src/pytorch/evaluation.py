@@ -210,11 +210,13 @@ def perform_attack(net, x, y: int, attacks: dict, parameters: dict) -> list:
     y_pred_advs = []
 
     for attack_name in FLAGS.attacks:
-        attack = attacks[attack_name] # get the attack
-        param = parameters[attack_name] # get the parameters
+        attack = attacks[attack_name]  # get the attack
+        param = parameters[attack_name]  # get the parameters
         x_adv = attack(net, x, *param)  # perform the attack
-        _, y_pred_adv = net(x_adv).max(1) # compute the labels
-        y_pred_advs.append(y_pred_adv.eq(y).sum().item())  # store the number of correct labels
+        _, y_pred_adv = net(x_adv).max(1)  # compute the labels
+        y_pred_advs.append(
+            y_pred_adv.eq(y).sum().item()
+        )  # store the number of correct labels
 
     return y_pred_advs
 
@@ -298,7 +300,7 @@ def main(_):
     # Load training and test data
     data = load_data(FLAGS.data, FLAGS.batchsize)
     # Load the saved model from the save path flag
-    net = torch.load("./saves/" + FLAGS.save + ".pt")
+    net = torch.load("src/pytorch/saves/" + FLAGS.save + ".pt")
     # Load the model on GPU if available
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if device == "cuda":

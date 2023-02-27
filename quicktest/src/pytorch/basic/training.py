@@ -1,7 +1,8 @@
 from absl import app, flags
 import numpy as np
 import torch
-
+import logging
+import os
 from tqdm import tqdm
 import time
 
@@ -14,6 +15,8 @@ from src.pytorch.utils import *
 
 
 FLAGS = flags.FLAGS
+
+logger = logging.getLogger(__name__)
 
 
 def training(net, data, device, optimizer, loss_fn) -> None:
@@ -28,6 +31,8 @@ def training(net, data, device, optimizer, loss_fn) -> None:
     # Train vanilla model
     net.train()
     # Training loop
+    start_time = time.time()
+    total_time = 0
     for epoch in range(1, FLAGS.nb_epochs + 1):
         train_loss, train_acc, tot = 0.0, 0.0, 0
         for x, y in tqdm(data.train, leave=False):
@@ -59,6 +64,20 @@ def training(net, data, device, optimizer, loss_fn) -> None:
             tot += y.shape[0]
             train_acc += predicted.eq(y).sum().item()
             train_loss += loss.item()
+            time_epoch = time.time() - start_time
+
+        total_time += time_epoch
+        ### Epoch end
+        # Store the loss and accuracy
+        logger.info(
+            "{},{:.4f},{:.4f},{:.2f},{:.2f}".format(
+                epoch,
+                train_loss,
+                train_acc / tot * 100,
+                time_epoch ,
+                total_time ,
+            )
+        )
         # Display loss/epoch
         print(
             "epoch: {}/{},\t train loss: {:.3f}, \t accuracy: {:.4f}%".format(
@@ -66,7 +85,7 @@ def training(net, data, device, optimizer, loss_fn) -> None:
             )
         )
     # Save the model (only for the last epoch)
-    torch.save(net, "./saves/basic/" + FLAGS.save + ".pt")
+    torch.save(net, "src/pytorch/saves/basic/" + FLAGS.save + ".pt")
 
 
 def display_flag():
@@ -91,6 +110,36 @@ def display_flag():
 
 
 def main(_):
+    attack = "fgsm"
+    model_name = "{}_{}_{}_{}".format(
+        FLAGS.data,
+        FLAGS.model,
+        FLAGS.eps,
+        attack,
+    )
+    if not os.path.exists(os.getcwd() + "/src/pytorch/log/basic/"):
+        os.mkdir(os.getcwd() + "/src/pytorch/log/basic/")
+    logfile = os.getcwd() + "/src/pytorch/log/basic/" + model_name + ".csv"
+
+    if os.path.exists(logfile):
+        os.remove(logfile)
+    logging.basicConfig(
+        format=" %(message)s",
+        level=logging.INFO,
+        filename=logfile,
+        force=True,
+    )
+    logger.info(
+        "# model:{} save: {} dataset:{} epoch:{} attack:{} eps:{}".format(
+            FLAGS.model,
+            FLAGS.save,
+            FLAGS.data,
+            FLAGS.nb_epochs,
+            attack,
+            FLAGS.eps,
+        )
+    )
+    logger.info("Epoch, Train loss,Train acc, Time, Time elapsed")
     display_flag()
     # Load training and test data
     data = load_data(FLAGS.data, FLAGS.batchsize)

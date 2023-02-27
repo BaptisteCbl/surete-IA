@@ -35,7 +35,7 @@ def get_attack(attack_name: str) -> Callable:
         is the equivalent to
         from cleverhans.torch.attacks.fast_gradient_method import fast_gradient_method
     """
-    module = __import__("src.pytroch.attacks." + attack_name)
+    module = __import__("src.pytorch.attacks." + attack_name)
     module = getattr(module, "pytorch")
     module = getattr(module, "attacks")
     moduleAtk = getattr(module, attack_name)
