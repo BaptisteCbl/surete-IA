@@ -17,7 +17,7 @@ import logging
 import os
 from tqdm import tqdm
 import time
-
+from torchsummary import summary
 from src.pytorch.attacks.fast_gradient_method import fast_gradient_method
 from src.pytorch.attacks.projected_gradient_descent import (
     projected_gradient_descent,
@@ -31,7 +31,7 @@ FLAGS = flags.FLAGS
 logger = logging.getLogger(__name__)
 
 
-def training(net, data, device, optimizer, loss_fn) -> None:
+def training(net, data, device, optimizer, loss_fn, model_name) -> None:
     half = False
     if half:
         scaler = torch.cuda.amp.GradScaler()
@@ -97,7 +97,7 @@ def training(net, data, device, optimizer, loss_fn) -> None:
             )
         )
     # Save the model (only for the last epoch)
-    torch.save(net, "src/pytorch/saves/basic/" + FLAGS.save + ".pt")
+    torch.save(net, "src/pytorch/saves/basic/" + model_name + ".pt")
 
 
 def display_flag():
@@ -161,19 +161,22 @@ def main(_):
     net = model(
         in_channels=FLAGS.in_channels,
         out_channels=FLAGS.out_channels,
-        dim=(int(FLAGS.dim[0]), int(FLAGS.dim[0])),
+        dim=(int(FLAGS.dim[0]), int(FLAGS.dim[1])),
     )
+    (FLAGS.in_channels, int(FLAGS.dim[0]), int(FLAGS.dim[1]))
     # Load the model on GPU if available
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if device == "cuda":
         net = net.cuda()
+    summary(net, (FLAGS.in_channels, int(FLAGS.dim[0]), int(FLAGS.dim[1])))
+
     # Instantiate the loss function
     loss_fn = torch.nn.CrossEntropyLoss(reduction="mean")
     # Instantiate the optimizer
     optimizer = torch.optim.AdamW(net.parameters())
     print("+" + "-" * 40 + "+")
     st = time.time()
-    training(net, data, device, optimizer, loss_fn)
+    training(net, data, device, optimizer, loss_fn, model_name)
     et = time.time()
     print("Training time: ", et - st)
 

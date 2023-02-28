@@ -3,7 +3,7 @@
  from
 *    Title: understanding-fast-adv-training 
 *    Date: 27/02/2023
-*    Availability: https://github.com/tml-epfl/understanding-fast-adv-training/train.py
+*    Availability: https://github.com/tml-epfl/understanding-fast-adv-training/blob/master/train.py
 *
 ***************************************************************************************"""
 

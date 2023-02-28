@@ -19,4 +19,6 @@ dependencies:
   - easydict                    # dict whose values are accessible as attributes
   - absl-py                     # Flags to add parameters to a script  
   - typing                      # to specify the type of functions
-  - matplotlib                        
+  - matplotlib   
+  - pip:                        # pip install
+    - torchsummary              # summary of a model (layers, number of parameters,..)       

@@ -43,7 +43,7 @@ def get_args():
         "--lr-schedule", default="cyclic", choices=["cyclic", "multistep"]
     )
     parser.add_argument("--lr-min", default=0.0, type=float)
-    parser.add_argument("--lr-max", default=0.03, type=float)
+    parser.add_argument("--lr-max", default=0.003, type=float)
     parser.add_argument("--weight-decay", default=5e-4, type=float)
     parser.add_argument("--momentum", default=0.9, type=float)
     parser.add_argument("--epsilon", default=8, type=int)

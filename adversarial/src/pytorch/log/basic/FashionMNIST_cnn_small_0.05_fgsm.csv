@@ -1,0 +1,3 @@
+ # model:cnn_small save: cnn_fashion dataset:FashionMNIST epoch:20 attack:fgsm eps:0.05
+ Epoch, Train loss,Train acc, Time, Time elapsed
+ 1,104.7125,69.6783,1.61,1.61
