@@ -446,7 +446,7 @@ def main():
                 else:
                     opt.step()
 
-            time_train += time.time() - time_start_iter
+            time_train = time.time() - time_start_iter
             train_loss += loss.item() * y.size(0)
             train_reg += reg.item() * y.size(0)
             train_acc += (output.max(1)[1] == y).sum().item()
@@ -461,7 +461,7 @@ def main():
             if iteration % args.eval_iter_freq == 0:
                 train_loss, train_reg = train_loss / train_n, train_reg / train_n
                 train_acc, avg_delta_l2 = train_acc / train_n, avg_delta_l2 / train_n
-
+                time_elapsed = time.time() - start_time
                 # it'd be incorrect to recalculate the BN stats on the test sets and for clean / adversarial points
                 utils.model_eval(model, half_prec)
 
@@ -520,7 +520,6 @@ def main():
                 # )
                 # cos_x_eta = utils.avg_cos_np(grad_x, grad_eta)
 
-                time_elapsed = time.time() - start_time
                 train_str = "{:.4f},{:.4f},{:.4f}".format(
                     train_loss, train_acc, train_acc_pgd
                 )
@@ -528,13 +527,13 @@ def main():
                     test_acc_clean, test_acc_fgsm, test_acc_pgd
                 )
                 logger.info(
-                    "{},{},{},{:.2f},{:.2f}".format(
+                    "{},{},{},{:.4f},{:.2f},{:.2f}".format(
                         epoch,
                         train_str,
                         test_str,
                         lr,
-                        time_train / 60,
-                        time_elapsed / 60,
+                        time_train,
+                        time_elapsed,
                     )
                 )
 

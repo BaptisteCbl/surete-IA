@@ -1,0 +1,7 @@
+ # Namespace(batch_size=256, data_dir='cifar-data', dataset='FashionMNIST', model='cnn_small', epochs=20, lr_schedule='cyclic', lr_max=0.003, attack='fgsm', eps=10.0, attack_iters=10, pgd_train_n_iters=10, pgd_alpha_train=2.0, fgsm_alpha=1.25, minibatch_replay=1, weight_decay=0.0005, attack_init='zero', fname='plain_cifar10', seed=0, gpu=0, debug=False, half_prec=False, grad_align_cos_lambda=0.0, eval_early_stopped_model=False, eval_iter_freq=200, n_eval_every_k_iter=256, n_layers=1, n_filters_cnn=16, batch_size_eval=256, n_final_eval=-1)
+ Epoch,Train loss,Train acc clean,Train acc PGD, Test acc clean,Test acc FGSM,Test acc PGD,Learning Rate, Training time,Time elapsed
+ 0,2.3812,0.0000,0.0000,0.1055,0.0000,0.0000,0.0000,0.07,0.42
+ 1,1.6660,0.3654,0.6680,0.7773,0.6953,0.6719,0.0003,0.01,3.38
+ 2,0.7414,0.7098,0.7500,0.8242,0.7578,0.7617,0.0006,0.01,6.30
+ 3,0.6502,0.7462,0.7578,0.8477,0.7656,0.7500,0.0010,0.01,9.10
+ 4,0.5946,0.7684,0.7617,0.8359,0.7930,0.7852,0.0013,0.01,11.95
