@@ -34,6 +34,19 @@ CIFAR10_labels = [
     "truck",
 ]
 
+FashionMNIST_labels = [
+    "T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt",
+    "Sneaker",
+    "Bag",
+    "Ankle boot",
+]
+
 
 def perform_attack(
     net,
@@ -93,8 +106,8 @@ def visualize(
     y_adv,
     y_adv_prob,
     attack: str,
+    labels,
     rgb: bool = False,
-    cifar10: bool = False,
 ):
     x = transform(x)
     x_adv = transform(x_adv)
@@ -129,12 +142,8 @@ def visualize(
     ax[2].axis("off")
     ax[0].text(1.1, 0.5, "+", size=15, ha="center", transform=ax[0].transAxes)
 
-    if cifar10:
-        text = "Prediction: {}\n Proba: {:.4f} \n Name {}".format(
-            y, y_prob, CIFAR10_labels[y]
-        )
-    else:
-        text = "Prediction: {}\n Proba: {:.4f}".format(y, y_prob)
+    text = "Prediction: {}\n Proba: {:.4f}".format(labels[y], y_prob)
+
     ax[0].text(
         0.5,
         -0.43,
@@ -160,12 +169,7 @@ def visualize(
     )
 
     ax[1].text(1.1, 0.5, " = ", size=15, ha="center", transform=ax[1].transAxes)
-    if cifar10:
-        text = "Prediction: {}\n Proba: {:.4f} \n Name {}".format(
-            y_adv, y_adv_prob, CIFAR10_labels[y_adv]
-        )
-    else:
-        text = "Prediction: {}\n Proba: {:.4f}".format(y_adv, y_adv_prob)
+    text = "Prediction: {}\n Proba: {:.4f}".format(labels[y_adv], y_adv_prob)
     ax[2].text(
         0.5,
         -0.43,
@@ -221,7 +225,13 @@ def main(_):
             parse_attacks(),
             param,
         )
-
+        if FLAGS.data == "CIFAR10":
+            labels = CIFAR10_labels
+        elif FLAGS.data == "FashionMNIST":
+            labels = FashionMNIST_labels
+        else:
+            labels = [i for i in range(label.shape)]
+        print(labels)
         for i, attack in enumerate(FLAGS.attacks):
             x_adv = x_advs[i]
             y_adv = toNumpy(y_pred_advs[i])[0]
@@ -234,8 +244,8 @@ def main(_):
                 y_adv,
                 y_adv_prob,
                 attack,
+                labels,
                 rgb=FLAGS.data != "MNIST",
-                cifar10=FLAGS.data == "CIFAR10",
             )
 
 

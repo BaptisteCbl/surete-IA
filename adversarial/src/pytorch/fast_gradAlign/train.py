@@ -52,7 +52,7 @@ def get_args():
         type=str,
     )
     parser.add_argument(
-        "--model", default="cnn", choices=["resnet18", "lenet", "cnn"], type=str
+        "--model", default="cnn", choices=["resnet18", "lenet", "cnn", "cnn_small"], type=str
     )
     parser.add_argument(
         "--epochs",

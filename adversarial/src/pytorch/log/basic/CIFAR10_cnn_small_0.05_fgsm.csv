@@ -1,2 +1,0 @@
- # model:cnn_small save: cnn_fashion dataset:CIFAR10 epoch:20 attack:fgsm eps:0.05
- Epoch, Train loss,Train acc, Time, Time elapsed

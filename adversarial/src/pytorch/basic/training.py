@@ -43,9 +43,9 @@ def training(net, data, device, optimizer, loss_fn, model_name) -> None:
     # Train vanilla model
     net.train()
     # Training loop
-    start_time = time.time()
     total_time = 0
     for epoch in range(1, FLAGS.nb_epochs + 1):
+        start_time = time.time()
         train_loss, train_acc, tot = 0.0, 0.0, 0
         for x, y in tqdm(data.train, leave=False):
             x, y = x.to(device), y.to(device)

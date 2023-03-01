@@ -48,9 +48,6 @@ def get_attack(attack_name: str) -> Callable:
     return attack
 
 
-transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.225, 0.225, 0.225])
-
-
 def load_data(data_name: str, batch_size: int) -> EasyDict:
     """Load data from torchvision.datasets by its name.
 
@@ -65,7 +62,7 @@ def load_data(data_name: str, batch_size: int) -> EasyDict:
     root = os.getcwd() + "/data/"  # + data_name
 
     if data_name == "CIFAR10":
-        normalize = torch.transforms.Normalize(
+        normalize = torchvision.transforms.Normalize(
             mean=[0.485, 0.456, 0.406], std=[0.225, 0.225, 0.225]
         )
     else:
