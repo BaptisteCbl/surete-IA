@@ -52,7 +52,10 @@ def get_args():
         type=str,
     )
     parser.add_argument(
-        "--model", default="cnn", choices=["resnet18", "lenet", "cnn", "cnn_small"], type=str
+        "--model",
+        default="cnn",
+        choices=["resnet18", "lenet", "cnn", "cnn_small"],
+        type=str,
     )
     parser.add_argument(
         "--epochs",
@@ -249,7 +252,7 @@ def main():
             momentum=0.9,
             weight_decay=args.weight_decay,
         )
-    elif args.model == "cnn":
+    elif args.model in ["cnn", "cnn_small"]:
         opt = torch.optim.Adam(
             model.parameters(), lr=args.lr_max, weight_decay=args.weight_decay
         )
