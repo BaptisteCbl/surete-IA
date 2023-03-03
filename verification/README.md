@@ -2,13 +2,13 @@
 
 ![α-β-CROWN verifier](https://camo.githubusercontent.com/249374ab11a00eeb7d631b3c7cc195d52a75c39195d2c90db549ac506cf68942/68747470733a2f2f7777772e6875616e2d7a68616e672e636f6d2f696d616765732f75706c6f61642f616c7068612d626574612d63726f776e2f616263726f776e5f75736167652e706e67)
 
-The verifier can use specificication sush as $$L_i norm$$, input bound and output linear constrainst (via VNNLIB file) 
+The verifier can use specificication sush as L norm, input bound and output linear constrainst (via VNNLIB file) 
 
 ## Installation and activation (extracted from the github page)
 
 
 ```bash
-git clone https://github.com/Verified-Intelligence/alpha-beta-CROWN.git
+# git clone https://github.com/Verified-Intelligence/alpha-beta-CROWN.git
 cd alpha-beta-CROWN
 # conda init bash #surely useless on your system
 # Remove the old environment, if necessary.
