@@ -1,4 +1,4 @@
-# This is an example configuration file that contains most useful parameter settings.
+#0.0392  This is an example configuration file that contains most useful parameter settings.
 general:
   device: cpu
 model:

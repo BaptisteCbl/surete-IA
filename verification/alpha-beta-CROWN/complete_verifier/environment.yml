@@ -2,6 +2,8 @@ channels:
   - gurobi
   - pytorch
   - defaults
+  - nvidia
+  - conda-forge 
 dependencies:
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=4.5=1_gnu
@@ -192,9 +194,20 @@ dependencies:
   - zipp=3.8.0=py37h06a4308_0
   - zlib=1.2.12=h7f8727e_2
   - zstd=1.4.9=haebb681_0
+  - pytorch                       
+  - torchvision                       
+  - numpy                       
+  - tqdm                        # progress bar on loops
+  - black                       # python formatter
+  - easydict                    # dict whose values are accessible as attributes
+  - absl-py                     # Flags to add parameters to a script  
+  - typing                      # to specify the type of functions
+  - matplotlib   
   - pip:
     - flatbuffers==2.0
     - onnx==1.11.0
     - git+https://github.com/KaidiXu/onnx2pytorch@102cf22e64ea7fae9462c1ba0feaa250ac0bc628#egg=onnx2pytorch
     - onnxruntime==1.11.0
     - protobuf==3.20.1
+    - torchsummary              # summary of a model (layers, number of parameters,..)       
+

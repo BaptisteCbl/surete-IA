@@ -332,6 +332,7 @@ def load_model_onnx(path, compute_test_acc=False, quirks=None, input_shape=None)
     return pytorch_model, onnx_shape
 
 
+
 def load_model(weights_loaded=True):
     """
     Load the model architectures and weights
@@ -460,6 +461,8 @@ def load_dataset():
         loader = datasets.CIFAR10
     elif arguments.Config["data"]["dataset"] == 'CIFAR100':
         loader = datasets.CIFAR100
+    elif arguments.Config["data"]["dataset"] == 'FashionMNIST':
+        loader = datasets.FashionMNIST
     else:
         raise ValueError("Dataset {} not supported.".format(arguments.Config["data"]["dataset"]))
     test_data = loader(database_path, train=False, download=True, transform=transforms.Compose([transforms.ToTensor(), normalize]))
