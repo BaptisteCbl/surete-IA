@@ -1,0 +1,11 @@
+{   
+    "inputs":       "./tree_verification_models/fashion_unrobust_new/0200.libsvm", 
+    "model":        "./tree_verification_models/fashion_unrobust_new/0200.json",
+    "start_idx":    900,
+    "num_attack":   500,
+    "eps_init":     0.03137254901960784,
+    "max_clique":   2,
+    "max_search":   10,
+    "max_level":    1,
+    "num_classes":  2
+}
