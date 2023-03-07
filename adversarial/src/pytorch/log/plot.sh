@@ -22,15 +22,15 @@ else
     echo "Ploting $file"
 fi
 # Check output saving condition
-if [ "$3" -eq "0"]
+if [[ $3 == 0 ]]
 then
    output_cond=0
    output_file=""
 else
     output_cond=1
-    output="../figures/"${file%.csv}".png"
     output_file="../figures/"${file%.csv}".png"
-    echo "Saving to: $output"
+
+    echo "Saving to: $output_file"
 fi
 
 gnuplot -c $gnuplot $file $output_cond $output_file $4 $5

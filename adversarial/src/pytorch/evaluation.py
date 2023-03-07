@@ -13,6 +13,7 @@ python src/pytorch/evaluation.py --flagfile=config_files/evaluation.cfg  --save=
 """
 
 from absl import app, flags
+import logging
 import numpy as np
 import torch
 from tqdm import tqdm
@@ -22,6 +23,7 @@ from src.pytorch.utils import *
 # from src.pytorch.attacks import *
 
 FLAGS = flags.FLAGS
+logger = logging.getLogger(__name__)
 
 
 ## All attacks are test in an untargeted setup (thus some None in parameters)
@@ -76,7 +78,7 @@ def parse_parameters(
                 ) = FLAGS.PGD_params
                 dict_param[attack_name] = (
                     eps,
-                    eval(eps_iter),
+                    eps / 4,  # eval(eps_iter),
                     eval(nb_iter),
                     norm,
                     clip_min,
@@ -245,6 +247,24 @@ def evaluation(net, data, device):
         data: easydict containing the training and test dataset.
         device: device to use, either cpu or cuda.
     """
+
+    if not os.path.exists(os.getcwd() + "/src/pytorch/evaluation_logs/fast_gradAling/"):
+        os.mkdir(os.getcwd() + "/src/pytorch/evaluation_logs/fast_gradAling/")
+    logfile = (
+        os.getcwd()
+        + "/src/pytorch/evaluation_logs/fast_gradAling/"
+        + FLAGS.eval_name
+        + ".csv"
+    )
+    if os.path.exists(logfile):
+        os.remove(logfile)
+    logging.basicConfig(
+        format=" %(message)s",
+        level=logging.INFO,
+        filename=logfile,
+        force=True,
+    )
+    logger.info("Name,Accuracy")
     # Evaluate on clean and adversarial data
     net.eval()
     # Gather all attacks function in a dictionnary
@@ -255,8 +275,10 @@ def evaluation(net, data, device):
     clip_min = FLAGS.clip_min
     clip_max = FLAGS.clip_max
     batch_size = 128
-    for eps in list(map(float, FLAGS.eps)):
-        print("For epsilon = ", eps)
+    all_eps = [i / 255 for i in range(0, 40)]
+    # for eps in list(map(float, FLAGS.eps)):
+    for eps in all_eps:
+        print("For epsilon = ", round(eps * 255))
         # Parse the paremters for each attack
         parameters = parse_parameters(
             num_classes, eps, norm, clip_min, clip_max, batch_size, device
@@ -270,25 +292,30 @@ def evaluation(net, data, device):
         for x, y in tqdm(data.test, leave=False):
             # Clean sample
             x, y = x.to(device), y.to(device)
-            _, y_pred = net(x).max(1)  # model prediction on clean examples
+            # _, y_pred = net(x).max(1)  # model prediction on clean examples
             # Adversarial examples
             y_preds_adv = perform_attack(net, x, y, attacks, parameters)
             # Accuracy log
             report["nb_test"] += y.size(0)
-            report["base"] += y_pred.eq(y).sum().item()
+            # report["base"] += y_pred.eq(y).sum().item()
             for attack, y_pred_adv in zip(FLAGS.attacks, y_preds_adv):
                 report[attack] += y_pred_adv
 
         # Display the accuracy
-        print(
-            "test acc on clean examples (%): {:.3f}".format(
-                report["base"] / report["nb_test"] * 100.0
-            )
-        )
+        # print(
+        #     "test acc on clean examples (%): {:.3f}".format(
+        #         report["base"] / report["nb_test"] * 100.0
+        #     )
+        # )
         for attack in FLAGS.attacks:
             print(
                 "test acc on {} adversarial examples (%): {:.3f}".format(
                     attack, report[attack] / report["nb_test"] * 100.0
+                )
+            )
+            logger.info(
+                "{},{}".format(
+                    round(eps * 255), report[attack] / report["nb_test"] * 100.0
                 )
             )
 
@@ -328,6 +355,8 @@ if __name__ == "__main__":
     flags.DEFINE_string("data", "", "The dataset to load.")
     flags.DEFINE_integer("batchsize", 0, "The batch size for the loader.")
     flags.DEFINE_string("save", "", "The path to save the model.")
+    flags.DEFINE_string("eval_name", "test", "Name of the log file")
+
     flags.DEFINE_list("attacks", [], "List of all attacks to perform")
     flags.DEFINE_integer("num_classes", 10, "Number of classes in the dataset")
 

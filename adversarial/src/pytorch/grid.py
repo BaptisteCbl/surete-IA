@@ -98,93 +98,6 @@ def transform(x):
     return np.clip(x, 0, 1)
 
 
-def visualize(
-    x,
-    x_adv,
-    y,
-    y_prob,
-    y_adv,
-    y_adv_prob,
-    attack: str,
-    labels,
-    rgb: bool = False,
-):
-    x = transform(x)
-    x_adv = transform(x_adv)
-    pert = x_adv - x
-
-    figure, ax = plt.subplots(1, 3, figsize=(12, 7))
-    if rgb:
-        ax[0].imshow(x, interpolation="lanczos")
-    else:
-        ax[0].imshow(x, cmap="Greys")
-    ax[0].set_title("Clean Example", fontsize=20)
-
-    if rgb:
-        ax[1].imshow(np.clip(pert / la.norm(pert.flatten(), np.inf), 0, 1))
-    else:
-        # ax[1].imshow(
-        #     pert + np.abs(np.min(pert.flatten())), cmap="Greys", vmin=0, vmax=0.5
-        # )
-        im = ax[1].imshow(pert, cmap="coolwarm")
-        cbar_ax = figure.add_axes([0.40, 0.255, 0.23, 0.015])
-        figure.colorbar(im, cax=cbar_ax, orientation="horizontal")
-
-    ax[1].set_title("Perturbation", fontsize=20)
-    ax[1].set_yticklabels([])
-    ax[1].set_xticklabels([])
-    ax[1].set_xticks([])
-    ax[1].set_yticks([])
-
-    if rgb:
-        ax[2].imshow(x_adv, interpolation="lanczos")
-    else:
-        ax[2].imshow(x_adv, cmap="Greys")
-    ax[2].set_title("Adversarial Example", fontsize=20)
-    ax[0].axis("off")
-    ax[2].axis("off")
-    ax[0].text(1.1, 0.5, "+", size=15, ha="center", transform=ax[0].transAxes)
-
-    text = "Prediction: {}\n Probability: {:.2f}%".format(labels[y], y_prob)
-
-    ax[0].text(
-        0.5,
-        -0.43,
-        text,
-        size=15,
-        ha="center",
-        transform=ax[0].transAxes,
-    )
-    pert_flat = pert.flatten()
-    ax[1].text(
-        0.5,
-        -0.53,
-        "Statistics: \n Pixels modified: {:.2f} % \n Average perturbation : {:.3f}\n Maximum perturbation: {:.3f}".format(
-            la.norm(pert_flat, 0)
-            / pert_flat.shape[0]
-            * 100,  # np.count_nonzero(pert_flat)
-            la.norm(pert_flat, 1) / int(la.norm(pert_flat, 0)),
-            la.norm(pert_flat, np.inf),
-        ),
-        size=15,
-        ha="center",
-        transform=ax[1].transAxes,
-    )
-
-    ax[1].text(1.1, 0.5, " = ", size=15, ha="center", transform=ax[1].transAxes)
-    text = "Prediction: {}\n Probability: {:.2f}%".format(labels[y_adv], y_adv_prob)
-    ax[2].text(
-        0.5,
-        -0.43,
-        text,
-        size=15,
-        ha="center",
-        transform=ax[2].transAxes,
-    )
-    figure.suptitle("Adversarial example for the {} attack".format(attack))
-    plt.show()
-
-
 def main(_):
     # Load the data and retrieve the first batch
     data = load_data(FLAGS.data, FLAGS.batchsize)
@@ -209,9 +122,11 @@ def main(_):
     y_prob, y = F.softmax(net(xi), dim=1).max(1)
     y_prob = toNumpy(y_prob)[0] * 100
     y = toNumpy(y)[0]
-
+    grid = torch.zeros(10, dim[1], dim[2], dim[3], device="cuda")
     # Perform the attacks
-    for eps in list(map(float, FLAGS.eps)):
+    # all_eps = list(map(float, FLAGS.eps))
+    all_eps = [i / 255 for i in range(0, 40)]
+    for j in range(0, 10):
         # get all the parameters needed for the attacks
         num_classes = FLAGS.num_classes
         norm = np.inf if FLAGS.norm == "inf" else int(FLAGS.norm)
@@ -219,36 +134,18 @@ def main(_):
         clip_max = FLAGS.clip_max
         batch_size = 1
         param = parse_parameters(
-            num_classes, eps, norm, clip_min, clip_max, batch_size, device
+            num_classes, all_eps[j], norm, clip_min, clip_max, batch_size, device
         )
 
-        x_advs, y_pred_advs, y_prob_advs = perform_attack(
+        x_advs, _, _ = perform_attack(
             net,
             xi,
             parse_attacks(),
             param,
         )
-        if FLAGS.data == "CIFAR10":
-            labels = CIFAR10_labels
-        elif FLAGS.data == "FashionMNIST":
-            labels = FashionMNIST_labels
-        else:
-            labels = [i for i in range(label.shape)]
-        for i, attack in enumerate(FLAGS.attacks):
-            x_adv = x_advs[i]
-            y_adv = toNumpy(y_pred_advs[i])[0]
-            y_adv_prob = toNumpy(y_prob_advs[i])[0] * 100
-            visualize(
-                xi,
-                x_adv,
-                y,
-                y_prob,
-                y_adv,
-                y_adv_prob,
-                attack,
-                labels,
-                rgb=FLAGS.data == "CIFAR10",
-            )
+        grid[j, :, :, :] = x_advs[0]
+    img = torchvision.transforms.ToPILImage()(torchvision.utils.make_grid(grid, nrow=2))
+    img.show()
 
 
 if __name__ == "__main__":

@@ -32,7 +32,11 @@ if(output_cond == 1){
     print "Saved"
 }
 
-plot filename using x:y  notitle
+plot \
+    "fast_gradAlign/FashionMNIST_cnn_small_10_fgsm_processed.csv" using x:y title "FGSM" with linespoints , \
+    "fast_gradAlign/FashionMNIST_cnn_small_10_pgd_processed.csv" using x:y title "PGD"with linespoints , \
+    "fast_gradAlign/FashionMNIST_cnn_small_10_none_processed.csv" using x:y title "Clean"with linespoints 
+
 
 if(output_cond == 1){
     set term x11

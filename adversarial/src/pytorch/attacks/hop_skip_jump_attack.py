@@ -336,7 +336,9 @@ def initialize(decision_function, sample, shape, clip_min, clip_max):
     """
     success = 0
     num_evals = 0
-
+    message = (
+        "Initialization failed! Try to use a misclassified image as `target_image`"
+    )
     # Find a misclassified random noise.
     while True:
         random_noise = clip_min + torch.rand(shape).to(sample.device) * (
@@ -346,9 +348,7 @@ def initialize(decision_function, sample, shape, clip_min, clip_max):
         if success:
             break
         num_evals += 1
-        message = (
-            "Initialization failed! Try to use a misclassified image as `target_image`"
-        )
+
         assert num_evals < 1e4, message
 
     # Binary search to minimize l2 distance to original image.

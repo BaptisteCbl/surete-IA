@@ -1,0 +1,8 @@
+ Name,Accuracy
+ clean,91.53
+ fast_gradient_method,28.08
+ projected_gradient_descent,20.73
+ carlini_wagner_l2,12.370000000000001
+ spsa,85.81
+ hop_skip_jump_attack,3.8600000000000003
+ deepfool,6.3
