@@ -1769,6 +1769,58 @@ class cnn_small(nn.Module):
         return x
 
 
+class cnn_small_3c(nn.Module):
+    """Basic CNN architecture."""
+
+    def __init__(
+        self,
+        in_channels: int = 3,
+        out_channels: int = 10,
+    ):
+        super(cnn_small_3c, self).__init__()
+        classes = out_channels
+
+        #### First layer
+        ## Paremeters
+        kernel_size = (4, 4)
+        stride = (2, 2)
+        padding = (1, 1)
+        out_channels = 16
+        ## Convolution
+        self.conv1 = nn.Conv2d(
+            in_channels,
+            out_channels,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=padding,
+        )
+        #### Second layer
+        ## Parameters
+        kernel_size = (4, 4)
+        stride = (2, 2)
+        in_channels = out_channels
+        out_channels = 32
+        ## Convolution
+        self.conv2 = nn.Conv2d(
+            in_channels,
+            out_channels,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=padding,
+        )
+        #### Third and fourth layers
+        ## Fully connected
+        self.fc1 = nn.Linear(32 * 8 * 8, 100)
+        self.fc2 = nn.Linear(100, classes)
+
+    def forward(self, x):
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = torch.flatten(x, 1)
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
 
 class cnn(nn.Module):
     """Basic CNN architecture."""
