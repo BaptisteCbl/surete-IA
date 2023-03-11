@@ -92,4 +92,5 @@ We use two configuration files one for training and one for the evaluation. The 
 In the log file we store the training loss/accuracy/time (and test in the gradAlign) by epoch.
 The file are in .csv format using logging. The gnuplot script allows to quicly plot some data.
 
-** TODO detail fast approach
+** Evaluation logs
+It contains the logs of the different evaluation.

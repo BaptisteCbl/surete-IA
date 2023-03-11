@@ -109,17 +109,26 @@ def visualize(
     labels,
     rgb: bool = False,
 ):
+
     x = transform(x)
     x_adv = transform(x_adv)
     pert = x_adv - x
 
     figure, ax = plt.subplots(1, 3, figsize=(12, 7))
+    # x[0, ::] = 1
+    # x[-1, ::] = 1
+    # x[::, 0] = 1
+    # x[::, -1] = 1
+
     if rgb:
         ax[0].imshow(x, interpolation="lanczos")
     else:
         ax[0].imshow(x, cmap="Greys")
     ax[0].set_title("Clean Example", fontsize=20)
-
+    ax[0].set_yticklabels([])
+    ax[0].set_xticklabels([])
+    ax[0].set_xticks([])
+    ax[0].set_yticks([])
     if rgb:
         ax[1].imshow(np.clip(pert / la.norm(pert.flatten(), np.inf), 0, 1))
     else:
@@ -141,8 +150,12 @@ def visualize(
     else:
         ax[2].imshow(x_adv, cmap="Greys")
     ax[2].set_title("Adversarial Example", fontsize=20)
-    ax[0].axis("off")
-    ax[2].axis("off")
+    ax[2].set_yticklabels([])
+    ax[2].set_xticklabels([])
+    ax[2].set_xticks([])
+    ax[2].set_yticks([])
+    # ax[0].axis("off")
+    # ax[2].axis("off")
     ax[0].text(1.1, 0.5, "+", size=15, ha="center", transform=ax[0].transAxes)
 
     text = "Prediction: {}\n Probability: {:.2f}%".format(labels[y], y_prob)
@@ -199,7 +212,7 @@ def main(_):
         net = net.cuda()
     net.eval()
     # Select the image on which to perform the attacks
-    i = 1
+    i = 2
     dim = batch.shape
     xi = torch.zeros(1, dim[1], dim[2], dim[3]).cuda()
     xi[0, :, :, :] = batch[i, :, :, :]

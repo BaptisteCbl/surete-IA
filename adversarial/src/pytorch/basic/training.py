@@ -36,10 +36,6 @@ def training(net, data, device, optimizer, loss_fn, model_name) -> None:
     if half:
         scaler = torch.cuda.amp.GradScaler()
 
-    # optimize = torch.optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
-    # scheduler = torch.optim.lr_scheduler.CyclicLR(
-    # optimizer, base_lr=0.01, max_lr=0.1, cycle_momentum=False
-    # )
     # Train vanilla model
     net.train()
     # Training loop

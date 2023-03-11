@@ -6,7 +6,9 @@
 *    Availability: https://github.com/tml-epfl/understanding-fast-adv-training/blob/master/train.py
 *
 ***************************************************************************************"""
-
+"""
+Example: python src/pytorch/fast_gradAlign/train.py --model=cnn_small --dataset=CIFAR10 --attack=pgd --eps=10 --attack_init=zero --epochs=40 --eval_iter_freq=50 --lr_max=0.003 --gpu=0 --n_final_eval=1000
+"""
 import argparse
 import logging
 import os

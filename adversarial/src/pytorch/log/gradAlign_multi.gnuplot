@@ -33,9 +33,9 @@ if(output_cond == 1){
 }
 
 plot \
+    "fast_gradAlign/FashionMNIST_cnn_small_10_none_processed.csv" using x:y title "Clean"with linespoints , \
     "fast_gradAlign/FashionMNIST_cnn_small_10_fgsm_processed.csv" using x:y title "FGSM" with linespoints , \
-    "fast_gradAlign/FashionMNIST_cnn_small_10_pgd_processed.csv" using x:y title "PGD"with linespoints , \
-    "fast_gradAlign/FashionMNIST_cnn_small_10_none_processed.csv" using x:y title "Clean"with linespoints 
+    "fast_gradAlign/FashionMNIST_cnn_small_10_pgd_processed.csv" using x:y title "PGD"with linespoints 
 
 
 if(output_cond == 1){

@@ -30,14 +30,14 @@ if(x==1){
 }
 
 if(output_cond == 1){
-    set term png         # (will produce .png output)
-    set output ARG3      # (output to any filename.png you want)
+    set term svg         # (will produce .svg output)
+    set output ARG3      # (output to any filename.svg you want)
     print "Saved"
 }
 plot \
+    "basic/FashionMNIST_cnn_small_0.0392_none.csv" using x:y title "Clean"with linespoints , \
     "basic/FashionMNIST_cnn_small_0.0392_fgsm.csv" using x:y title "FGSM" with linespoints , \
-    "basic/FashionMNIST_cnn_small_0.0392_pgd.csv" using x:y title "PGD"with linespoints , \
-    "basic/FashionMNIST_cnn_small_0.0392_none.csv" using x:y title "Clean"with linespoints 
+    "basic/FashionMNIST_cnn_small_0.0392_pgd.csv" using x:y title "PGD"with linespoints 
 
 if(output_cond == 1){
     set term x11
