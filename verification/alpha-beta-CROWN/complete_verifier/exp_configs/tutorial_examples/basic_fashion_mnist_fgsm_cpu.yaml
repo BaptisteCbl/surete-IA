@@ -2,17 +2,17 @@
 general:
   device: cpu
 model:
-  name: cnn_small_3c  # This model is defined in model_defs.py. Add your own model definitions there.
-  path: models/custom_pt/CIFAR10_cnn_small_0.0392_pgd.pt  # Path to PyTorch checkpoint.
+  name: cnn_small  # This model is defined in model_defs.py. Add your own model definitions there.
+  path: models/custom_pt/FashionMNIST_cnn_small_0.0392_fgsm.pt  # Path to PyTorch checkpoint.
 data:
-  dataset: CIFAR  # Dataset name. This is just the standard CIFAR-10 test set defined in the "load_verification_dataset()" function in utils.py
-  mean: [0.4914, 0.4822, 0.4465]  # Mean for normalization.
-  std: [0.2471, 0.2435, 0.2616]  # Std for normalization.
+  dataset: FashionMNIST  # Dataset name. This is just the standard CIFAR-10 test set defined in the "load_verification_dataset()" function in utils.py
+    #mean: [0.4914, 0.4822, 0.4465]  # Mean for normalization.
+    #std: [0.2471, 0.2435, 0.2616]  # Std for normalization.
   start: 0  # First example to verify in dataset.
   end: 100  # Last example to verify in dataset. We verify 100 examples in this test.
 specification:
   norm: .inf  # Linf norm (can also be 2 or 1).
-  epsilon: 0.0392 # 0.00784313725490196  # epsilon=2./255.
+  epsilon: 0.0392 #0.00784313725490196  # epsilon=2./255.
     #attack:  # Currently attack is only implemented for Linf norm.
     #pgd_steps: 100  # Increase for a stronger attack. A PGD attack will be used before verification to filter on non-robust data examples.
     #pgd_restarts: 30  # Increase for a stronger attack.

@@ -10,5 +10,5 @@
     - Debona : usable, not explanation so arguements hard to determine, https://github.com/ChristopherBrix/Debona
     - treeVerification : usable, works straightforward, https://github.com/chenhongge/treeVerification
     - FastBATLLNN : unusable, no readme and install script doesn't work, https://github.com/jferlez/FastBATLLNN-VNNCOMP
-  - Robust training : 
-    - RobustTrees : usable, well explained readme, https://github.com/chenhongge/RobustTrees
+  - Robust training for trees: 
+    - RobustTrees : usable, well explained readme, https://github.com/chenhongge/RobustTree

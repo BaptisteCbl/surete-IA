@@ -103,3 +103,57 @@ python abcrown.py --config exp_configs/tutorial_examples/basic_cifar_pgd_cpu.yam
 python abcrown.py --config exp_configs/tutorial_examples/basic_fashion_mnist_pgd_cpu.yaml 
 python abcrown.py --config exp_configs/tutorial_examples/basic_fashion_mnist_none_cpu.yaml
 ```
+
+Please find the results in the ```res_*_*.md``` files.
+
+# [treeVerification](https://github.com/chenhongge/treeVerification)
+
+
+## Run a verification (extracted from the github page)
+
+```bash
+# git clone https://github.com/Verified-Intelligence/alpha-beta-CROWN.git
+cd treeVerification
+./treeVerify "config".json
+```
+
+## Config file
+
+### General
+
+A large number of option can be configured. I will just explain the most important features for us.
+The list of all options can be find [here](https://github.com/Verified-Intelligence/alpha-beta-CROWN/blob/main/complete_verifier/docs/abcrown_all_params.yaml).
+
+### Basic examples
+
+Some short config can be found in the README.md.
+### Custom configuration
+
+Here is the config file for running the verifier on the FashionMNIST dataset with a robust trained tree:
+```json
+{   
+    "inputs":       "./tree_verification_models/fashion_robust_new/0200.libsvm", 
+    "model":        "./tree_verification_models/fashion_robust_new/0200.json",
+    "start_idx":    990,
+    "num_attack":   500,
+    "eps_init":     0.0392156862745098,
+    "max_clique":   2,
+    "max_search":   10,
+    "max_level":    1,
+    "num_classes":  10
+}
+```
+"inputs" refers to usually a test set in libsvm format and model the decision tree.
+The test sets are extracted from the adversial training repository from the sames authors [RobustTree](https://github.com/chenhongge/RobustTrees).
+
+
+## Run the instances we used :
+
+```bash
+./treeVerify config_mnist_rob.json
+./treeVerify config_mnist_unrob.json
+./treeVerify config_fashion_rob.json
+./treeVerify config_fashion_unrob.json
+```
+
+Please find the results in the ```res.md``` file.
