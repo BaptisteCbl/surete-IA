@@ -30,6 +30,12 @@ Running the basic training from adversarial/
 python src/pytorch/basic/training.py  --flagfile=config_files/training.cfg
 #+end_src
 
+
+Running the fast adversarial training (for some parameters we keep the default value defined in the ~get_args~) function
+#+begin_src bash
+python src/pytorch/fast_gradAlign/train.py --model=cnn_small --dataset=CIFAR10 --attack=pgd --eps=10 --attack_init=zero --epochs=40 --eval_iter_freq=50 --lr_max=0.003 --gpu=0 --n_final_eval=1000
+#+end_src
+
 Running the evaluation
 #+begin_src bash
 python src/pytorch/evaluation.py  --flagfile=config_files/evaluation.cfg
@@ -85,7 +91,7 @@ We use two configuration files one for training and one for the evaluation. The 
 - There are 3 different approach to train a model: 
     - ~src/pytorch/basic/~ which is "basic" training loop working with all model/data pairs, it can be used to
     perfrom adversarial training
-    - ~src/pytorch/fast~ based on [[https://github.com/locuslab/fast_adversarial][fast adversarial]] training approach. There are two folders one to work on MNIST/FashionMnist and one to work on CIFAR10.
+    - ~src/pytorch/fast~ based on [[https://github.com/locuslab/fast_adversarial][fast adversarial]] training approach. There are two folders one to work on MNIST/FashionMNIST and one to work on CIFAR10.
     - ~src/pytorch/fast_gradAlign~ based on another [[https://github.com/tml-epfl/understanding-fast-adv-training][fast adversarial]] training approach. It works on MNIST, FashionMNIST and CIFAR10.
 
 ** Logs 
