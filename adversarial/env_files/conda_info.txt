@@ -1,0 +1,31 @@
+
+     active environment : Robust
+    active env location : /home/guillaume/miniconda3/envs/Robust
+            shell level : 2
+       user config file : /home/guillaume/.condarc
+ populated config files : /home/guillaume/.condarc
+          conda version : 23.1.0
+    conda-build version : not installed
+         python version : 3.10.9.final.0
+       virtual packages : __archspec=1=x86_64
+                          __cuda=11.7=0
+                          __glibc=2.35=0
+                          __linux=5.19.0=0
+                          __unix=0=0
+       base environment : /home/guillaume/miniconda3  (writable)
+      conda av data dir : /home/guillaume/miniconda3/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /home/guillaume/miniconda3/pkgs
+                          /home/guillaume/.conda/pkgs
+       envs directories : /home/guillaume/miniconda3/envs
+                          /home/guillaume/.conda/envs
+               platform : linux-64
+             user-agent : conda/23.1.0 requests/2.28.1 CPython/3.10.9 Linux/5.19.0-32-generic ubuntu/22.04.2 glibc/2.35
+                UID:GID : 1000:1000
+             netrc file : None
+           offline mode : False
+
