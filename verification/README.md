@@ -126,11 +126,7 @@ cd treeVerification
 
 ### General
 
-A large number of option can be configured. I will just explain the most important features for us.
-
-### Basic examples
-
-Some short config can be found in the README.md.
+A large number of option can be configured they can be find in the README.md of treeVerification.
 
 ### Custom configuration
 
