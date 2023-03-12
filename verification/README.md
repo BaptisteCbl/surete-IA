@@ -99,12 +99,15 @@ Then run the ```complete_verifier/models/custom_pt/change_state_dict.py``` scrip
 ## Run the instances we used :
 
 ```bash
-python abcrown.py --config exp_configs/tutorial_examples/basic_mnist_cpu.yaml
-python abcrown.py --config exp_configs/tutorial_examples/basic_cifar_free_cpu.yaml        
-python abcrown.py --config exp_configs/tutorial_examples/basic_cifar_none_cpu.yaml        
-python abcrown.py --config exp_configs/tutorial_examples/basic_cifar_pgd_cpu.yaml         
-python abcrown.py --config exp_configs/tutorial_examples/basic_fashion_mnist_pgd_cpu.yaml 
+python abcrown.py --config exp_configs/tutorial_examples/basic_mnist_none_cpu.yaml
+python abcrown.py --config exp_configs/tutorial_examples/basic_mnist_fgsm_cpu.yaml
+python abcrown.py --config exp_configs/tutorial_examples/basic_mnist_pgd_cpu.yaml         
 python abcrown.py --config exp_configs/tutorial_examples/basic_fashion_mnist_none_cpu.yaml
+python abcrown.py --config exp_configs/tutorial_examples/basic_fashion_mnist_fgsm_cpu.yaml
+python abcrown.py --config exp_configs/tutorial_examples/basic_fashion_mnist_pgd_cpu.yaml
+python abcrown.py --config exp_configs/tutorial_examples/basic_cifar_none_cpu.yaml 
+python abcrown.py --config exp_configs/tutorial_examples/basic_cifar_fgsm_cpu.yaml 
+python abcrown.py --config exp_configs/tutorial_examples/basic_cifar_pgd_cpu.yaml
 ```
 
 Please find the results in the ```res_*_*.md``` files.
