@@ -1,5 +1,7 @@
 # [α-β-CROWN](https://github.com/Verified-Intelligence/alpha-beta-CROWN)
 
+The folder α-β-CROWN is just a clone of the [α-β-CROWN](https://github.com/Verified-Intelligence/alpha-beta-CROWN) repository. The only modification are the "complete_verifier/model_defs.py" file, the results files and the "cpu" config files in /complete_verifier/exp_configs/tutorial_examples.
+
 ![α-β-CROWN verifier](https://camo.githubusercontent.com/249374ab11a00eeb7d631b3c7cc195d52a75c39195d2c90db549ac506cf68942/68747470733a2f2f7777772e6875616e2d7a68616e672e636f6d2f696d616765732f75706c6f61642f616c7068612d626574612d63726f776e2f616263726f776e5f75736167652e706e67)
 
 The verifier can use specificication sush as L norm, input bound and output linear constrainst (via VNNLIB file) 
@@ -108,6 +110,7 @@ Please find the results in the ```res_*_*.md``` files.
 
 # [treeVerification](https://github.com/chenhongge/treeVerification)
 
+The folder treeVerification is just a clone of the [treeVerification](https://github.com/chenhongge/treeVerification) repository. The only modification are the results files and the MNIST and FashionMNIST config files. 
 
 ## Run a verification (extracted from the github page)
 

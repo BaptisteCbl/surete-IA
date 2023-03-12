@@ -1,0 +1,14 @@
+**Recap of the tools tested :**
+  - Verification : 
+    - α,β-CROWN : usable, CPLEX licence required, https://github.com/Verified-Intelligence/alpha-beta-CROWN,   
+    - MN-BaB : unusable, password for gitlab submodule required, https://github.com/eth-sri/mn-bab 
+    - VeriNet : unusable, Xpress licence required, https://github.com/vas-group-imperial/VeriNet
+    - nnenum : usable, no issues (with docker run, classic run not tested), https://github.com/stanleybak/nnenum
+    - CGDTest : unusable, repository not reachable (404), https://github.com/vin-nag/CGD.git
+    - PeregriNN : unusable, may work but readme not up-to-date so require time, https://github.com/haithamkhedr/PeregriNN/tree/vnn2022
+    - Marabou : unusable, will surely work but for now I can't compile properly, https://github.com/NeuralNetworkVerification/Marabou
+    - Debona : usable, not explanation so arguements hard to determine, https://github.com/ChristopherBrix/Debona
+    - treeVerification : usable, works straightforward, https://github.com/chenhongge/treeVerification
+    - FastBATLLNN : unusable, no readme and install script doesn't work, https://github.com/jferlez/FastBATLLNN-VNNCOMP
+  - Robust training for trees: 
+    - RobustTrees : usable, well explained readme, https://github.com/chenhongge/RobustTree
