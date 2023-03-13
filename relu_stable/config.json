@@ -8,7 +8,7 @@
   "w_rsloss": 1e-4,
   
   "_comment": "===== MODEL CONFIGURATION =====",
-  "model_dir": "trained_models/relu_stable",
+  "model_dir": "trained_models/",
   "estimation_method": "naive_ia",
   "filters": [16, 32, 100],
   "filter_size": 5,

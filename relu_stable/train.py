@@ -1,5 +1,4 @@
-"""Trains a model, saving checkpoints and tensorboard summaries along
-   the way."""
+"""Trains a model, saving checkpoints along the way."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -123,7 +122,7 @@ args.add_attack(("LinfPGDAttack(eps="+str(config['epsilon'])+", k="+str(config['
 args.add_eval_adv_param(("LinfPGDAttack(eps="+str(config['eval_epsilon'])+", k="+"40"+", a="+str(config['eval_epsilon']/10.0)+", random_start="+str(config['random_start'])+", loss_func="+str(config['loss_func'])+", incremental="+"false"+")") if adv_training&eval_during_training else "None")
 
 
-trainedmodelsdir = os.getcwd() + "\\trained_model\\"
+trainedmodelsdir = os.getcwd() + "\\trained_models\\"
 if not os.path.exists(trainedmodelsdir):
     os.mkdir(trainedmodelsdir)
 
