@@ -22,6 +22,10 @@ conda activate Robust
 #+begin_src bash
 pip install -e .
 #+end_src
+The scripts in ~adversarial/src/tf2/~ need some extra packages which can be installed using :
+#+begin_src bash
+pip install -e .['base, tf']
+#+end_src
 
 * Running the  scripts
 
@@ -100,3 +104,31 @@ The file are in .csv format using logging. The gnuplot script allows to quicly p
 
 ** Evaluation logs
 It contains the logs of the different evaluation.
+
+** Running the scripts in ~adversarial/src/tf2/~
+These scripts were originally run on Colab Notebooks the two experiments performed here are Confidence Learning and Parametric Noise Injection, the contents of ~adversarial/src/tf2/~ are a ~.py~ files version of these notebooks.
+Everything happens in the ~main.py~ where the different hyperparameters and the scenario can be chosen :
+#+begin_src python
+RUN_TYPE = "Confidence" #@param ["Confidence", "Noise"] {type:"raw"}
+#+end_src
+is for the experiment choice : ~Confidence~ for confidence learning, and ~Noise~ for Parametric Noise Injection;
+#+begin_src python
+EPOCHS = 20 #@param {type:"slider", min:0, max:20, step:1}
+BATCH_SIZE = 128 #@param ["512", "256", "128"] {type:"raw"}
+ADVERSARIAL_TRAINING = False #@param {type:"boolean"}
+EPSILON = 0.3 #@param {type:"slider", min:0, max:1, step:0.1}
+#+end_src
+are the common parameters of the experiments : 
+- ~EPOCHS~ is the number of epochs for training;
+- ~BATCH_SIZE~ is the training batch size;
+- ~ADVERSARIAL_TRAINING~ indicates if adversarial training is done  or not;
+- ~EPSILON~ is the epsilon hyperparameter of the adversarial attacks (for FGSM and PGD);
+#+begin_src python
+LAMBDA = 2 #@param {type:"slider", min:0, max:3, step:0.1}
+#+end_src
+is for a hyperparameter of loss in the confidence learning experiment;
+#+begin_src python
+NOISY_MODEL = False #@param {type:"boolean"}
+ADVERSARIAL_TRAINING_COEFFICIENT = 0.5 #@param {type:"slider", min:0, max:1, step:0.1}
+#+end_src
+these are parameters of the Parametric Noise Injection ; the former indicating if noise is actually injected in the model or not, and the latter parametrizing the percentage of adversarial examples seen by the model at each batch when ~ADVERSARIAL_TRAINING~ is set to ~True~.
