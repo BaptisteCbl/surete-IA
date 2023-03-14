@@ -106,8 +106,8 @@ The file are in .csv format using logging. The gnuplot script allows to quicly p
 It contains the logs of the different evaluation.
 
 ** Running the scripts in ~adversarial/src/tf2/~
-These scripts were originally run on Colab Notebooks the two experiments performed here are Confidence Learning and Parametric Noise Injection, the contents of ~adversarial/src/tf2/~ are a ~.py~ files version of these notebooks.
-Everything happens in the ~main.py~ where the different hyperparameters and the scenario can be chosen :
+The two experiments performed here are Confidence Learning and Parametric Noise Injection, these scripts were originally run on Colab Notebooks; the contents of ~adversarial/src/tf2/~ are a ~.py~ files version of these notebooks.
+Everything happens in the ~main.py~ where the different hyperparameters and experiments to run can be chosen :
 #+begin_src python
 RUN_TYPE = "Confidence" #@param ["Confidence", "Noise"] {type:"raw"}
 #+end_src
@@ -126,7 +126,7 @@ are the common parameters of the experiments :
 #+begin_src python
 LAMBDA = 2 #@param {type:"slider", min:0, max:3, step:0.1}
 #+end_src
-is for a hyperparameter of loss in the confidence learning experiment;
+is a hyperparameter of the loss in the confidence learning experiment;
 #+begin_src python
 NOISY_MODEL = False #@param {type:"boolean"}
 ADVERSARIAL_TRAINING_COEFFICIENT = 0.5 #@param {type:"slider", min:0, max:1, step:0.1}
